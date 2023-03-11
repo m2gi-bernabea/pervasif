@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ipojo xmlns="org.apache.felix.ipojo">
+  <component classname="com.productivity.housse.siren.ShowerAlarmImpl" name="ShowerAlarm">
+    <requires specification="fr.liglab.adele.icasa.device.presence.PresenceSensor" field="presenceSensor"/>
+    <requires specification="fr.liglab.adele.icasa.device.security.Siren" field="siren"/>
+    <callback method="start" transition="validate"/>
+    <callback method="stop" transition="invalidate"/>
+  </component>
+  <instance component="ShowerAlarm" name="ShowerAlarm-1"/>
 </ipojo>
