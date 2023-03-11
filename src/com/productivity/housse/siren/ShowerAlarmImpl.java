@@ -9,38 +9,39 @@ import java.util.Map;
 public class ShowerAlarmImpl implements DeviceListener {
 
 	/** Field for siren dependency */
-	private Siren siren;
+	private Siren[] sirens;
 	/** Field for presenceSensor dependency */
-	private PresenceSensor presenceSensor;
+	private PresenceSensor[] presenceSensors;
 
 	/** Bind Method for siren dependency */
-	public void bindSiren(Siren siren, Map properties) {
-		this.siren = siren;
+	public void bindSirens(Siren siren, Map properties) {
+		  System.out.println("bind siren " + siren.getSerialNumber());
 	}
 
 	/** Unbind Method for siren dependency */
-	public void unbindSiren(Siren siren, Map properties) {
-		this.siren = null;
+	public void unbindSirens(Siren siren, Map properties) {
+		  System.out.println("unbind siren " + siren.getSerialNumber());	
 	}
 
 	/** Bind Method for presenceSensors dependency */
-	public void bindPresenceSensor(PresenceSensor presenceSensor, Map properties) {
+	public void bindPresenceSensors(PresenceSensor presenceSensor, Map properties) {
+		System.out.println("bind presence sensor for shower"+ presenceSensor.getSerialNumber());
 		presenceSensor.addListener(this);
-		this.presenceSensor = presenceSensor;
 	}
 
 	/** Unbind Method for presenceSensors dependency */
-	public void unbindPresenceSensor(PresenceSensor presenceSensor,
+	public void unbindPresenceSensors(PresenceSensor presenceSensor,
 			Map properties) {
+		System.out.println("Unbind presence sensor for shower"+ presenceSensor.getSerialNumber());	
 		presenceSensor.removeListener(this);
-		this.presenceSensor = null;
 	}
 
 	/** Component Lifecycle Method */
 	public void stop() {
 		System.out.println("Component is stopping...");
-		presenceSensor = null;
-		presenceSensor = null;
+		for(PresenceSensor sensor : presenceSensors){
+		      sensor.removeListener(this);
+		   }
 	}
 
 	/** Component Lifecycle Method */
@@ -65,6 +66,7 @@ public class ShowerAlarmImpl implements DeviceListener {
 
 	public void devicePropertyModified(GenericDevice device, String propertyName,
 			Object oldValue, Object newValue) {
+		 System.out.println("Device property modified called on :"+device+"\n property :"+propertyName);
 		if(device instanceof PresenceSensor) {
 			 PresenceSensor activSensor = (PresenceSensor) device;
 			 if(activSensor != null && propertyName.equals(PresenceSensor.PRESENCE_SENSOR_SENSED_PRESENCE)){
