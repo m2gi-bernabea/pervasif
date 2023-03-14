@@ -1,3 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ipojo xmlns="org.apache.felix.ipojo">
+  <component classname="ListenerSensorImpl" name="ListenerSensor">
+    <requires aggregate="true" optional="true" specification="fr.liglab.adele.icasa.device.presence.PresenceSensor" field="presenceSensors">
+      <callback method="bindPresenceSensor" type="bind"/>
+      <callback method="unbindPresenceSensor" type="unbind"/>
+    </requires>
+    <requires aggregate="true" optional="true" specification="fr.liglab.adele.icasa.device.motion.MotionSensor" field="motionSensors">
+      <callback method="bindMotionSensor" type="bind"/>
+      <callback method="unbindMotionSensor" type="unbind"/>
+    </requires>
+    <requires aggregate="true" optional="true" specification="fr.liglab.adele.icasa.device.temperature.Thermometer" field="thermometerSensors">
+      <callback method="bindThermometerSensor" type="bind"/>
+      <callback method="unbindThermometerSensor" type="unbind"/>
+    </requires>
+    <requires aggregate="true" optional="true" specification="fr.liglab.adele.icasa.device.light.Photometer" field="photometerSensors">
+      <callback method="bindPhotometerSensors" type="bind"/>
+      <callback method="unbindPhotometerSensors" type="unbind"/>
+    </requires>
+    <callback method="start" transition="validate"/>
+    <callback method="stop" transition="invalidate"/>
+  </component>
+  <instance component="ListenerSensor" name="ListenerSensor-1"/>
 </ipojo>
