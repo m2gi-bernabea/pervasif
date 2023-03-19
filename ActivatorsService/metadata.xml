@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ipojo xmlns="org.apache.felix.ipojo">
+  <component classname="activator.service.provided.imp.ActivatorProviderImpl" name="ActivatorProvider">
+    <provides specifications="activator.service.provided.ActivatorServiceIT"/>
+    <callback method="start" transition="validate"/>
+    <callback method="stop" transition="invalidate"/>
+  </component>
+  <instance component="ActivatorProvider" name="ActivatorProvider-1"/>
 </ipojo>
