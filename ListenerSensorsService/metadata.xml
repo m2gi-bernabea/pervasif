@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ipojo xmlns="org.apache.felix.ipojo">
-  <component classname="ListenerSensorImpl" name="ListenerSensor">
+  <component classname="listener.service.impl.ListenerSensorImpl" name="ListenerSensor">
     <requires aggregate="true" optional="true" specification="fr.liglab.adele.icasa.device.presence.PresenceSensor" field="presenceSensors">
       <callback method="bindPresenceSensor" type="bind"/>
       <callback method="unbindPresenceSensor" type="unbind"/>
@@ -19,6 +19,8 @@
     </requires>
     <callback method="start" transition="validate"/>
     <callback method="stop" transition="invalidate"/>
+    <requires specification="manager.service.provided.it.ContextProviderIt" field="contextProvider"/>
+    <requires specification="manager.service.provided.it.ManagerProviderIt" field="managerProvider"/>
   </component>
   <instance component="ListenerSensor" name="ListenerSensor-1"/>
 </ipojo>
