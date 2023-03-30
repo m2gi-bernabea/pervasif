@@ -144,7 +144,8 @@ public class ListenerSensorImpl implements DeviceListener {
 		}
 
 		if (device instanceof Thermometer) {
-
+			System.out.println("nouvelle température");
+			System.out.println("Temp : "+ ((Thermometer) device).getTemperature());;
 		}
 
 	}
