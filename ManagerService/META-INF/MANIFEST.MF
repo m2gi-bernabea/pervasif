@@ -51,22 +51,24 @@ iPOJO-Components: instance { $component="ContextProvider" $name="Conte
  ="invalidate" }manipulation { $classname="manager.service.provided.im
  pl.ContextProviderImpl" interface { $name="manager.service.provided.i
  t.ContextProviderIt" }method { $name="getAllContext" $return="java.ut
- il.List" }method { $name="getContextActif" $return="java.lang.String"
-  }method { $name="getContextInactif" $return="java.lang.String" }meth
- od { $name="getContextSalleDeBain" $return="java.lang.String" }method
-  { $name="stop" }method { $name="start" }}}component { $classname="ma
- nager.service.provided.impl.ManagerProviderImpl" $name="ManagerProvid
- er" provides { $specifications="manager.service.provided.it.ManagerPr
- oviderIt" }callback { $method="start" $transition="validate" }callbac
- k { $method="stop" $transition="invalidate" }requires { $specificatio
- n="activator.service.provided.ActivatorServiceIT" $field="activatorSe
- rvice" }manipulation { $classname="manager.service.provided.impl.Mana
- gerProviderImpl" interface { $name="manager.service.provided.it.Manag
- erProviderIt" }field { $name="activatorService" $type="activator.serv
- ice.provided.ActivatorServiceIT" }field { $name="currentBasicContext"
-  $type="manager.service.utils.Context" }method { $name="pushNewBasicC
- ontext" $arguments="{java.lang.String}" $names="{newContext}" }method
-  { $name="pushNewBasicContext" $arguments="{java.util.List}" $names="
- {newMultipleContext}" }method { $name="computeComplexContext" }method
-  { $name="stop" }method { $name="start" }}}
+ il.List" }method { $name="getContextActifDescriptor" $return="java.la
+ ng.String" }method { $name="getContextInactifDescriptor" $return="jav
+ a.lang.String" }method { $name="stop" }method { $name="start" }method
+  { $name="getContextTropChaudDescriptor" $return="java.lang.String" }
+ method { $name="getContextTropFroidDescriptor" $return="java.lang.Str
+ ing" }}}component { $classname="manager.service.provided.impl.Manager
+ ProviderImpl" $name="ManagerProvider" provides { $specifications="man
+ ager.service.provided.it.ManagerProviderIt" }callback { $method="star
+ t" $transition="validate" }callback { $method="stop" $transition="inv
+ alidate" }requires { $specification="activator.service.provided.Activ
+ atorServiceIT" $field="activatorService" }manipulation { $classname="
+ manager.service.provided.impl.ManagerProviderImpl" interface { $name=
+ "manager.service.provided.it.ManagerProviderIt" }field { $name="activ
+ atorService" $type="activator.service.provided.ActivatorServiceIT" }f
+ ield { $name="currentBasicContext" $type="manager.service.utils.Conte
+ xt" }method { $name="pushNewBasicContext" $arguments="{java.lang.Stri
+ ng}" $names="{newContext}" }method { $name="pushNewBasicContext" $arg
+ uments="{java.util.List}" $names="{newMultipleContext}" }method { $na
+ me="computeComplexContext" }method { $name="stop" }method { $name="st
+ art" }}}
 

@@ -111,8 +111,8 @@ public class ListenerSensorImpl implements DeviceListener {
 		String detectorLocation = (String) device.getPropertyValue("Location");
 		System.out.println("movement detected in " + detectorLocation);
 		
-		System.out.println("ListenerService : Début calcul d'un nouveau contexte simple :");
-		String context = contextProvider.getContextActif();
+		System.out.println("ListenerService : Dï¿½but calcul d'un nouveau contexte simple :");
+		String context = contextProvider.getContextActifDescriptor();
 		System.out.println("ListenerService : Fin du calcul, transmission au ManagerService. ");
 		managerProvider.pushNewBasicContext(context);
 

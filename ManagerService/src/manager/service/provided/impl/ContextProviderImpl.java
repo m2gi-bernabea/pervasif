@@ -19,18 +19,13 @@ public class ContextProviderImpl implements ContextProviderIt {
 	}
 
 	@Override
-	public String getContextActif() {
+	public String getContextActifDescriptor() {
 		return Context.ACTIF.descriptor;
 	}
 
 	@Override
-	public String getContextInactif() {
+	public String getContextInactifDescriptor() {
 		return Context.INACTIF.descriptor;
-	}
-
-	@Override
-	public String getContextSalleDeBain() {
-		return Context.SALLEDEBAIN.descriptor;
 	}
 
 	/** Component Lifecycle Method */
@@ -41,6 +36,16 @@ public class ContextProviderImpl implements ContextProviderIt {
 	/** Component Lifecycle Method */
 	public void start() {
 		System.out.println("Service ContextProvider is started !");
+	}
+
+	@Override
+	public String getContextTropChaudDescriptor() {
+		return Context.TROPCHAUD.descriptor;
+	}
+
+	@Override
+	public String getContextTropFroidDescriptor() {
+		return Context.TROPFROID.descriptor;
 	}
 
 }

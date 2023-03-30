@@ -14,16 +14,16 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 
 	@Override
 	public void pushNewBasicContext(String newContext) {
-		System.out.println("ManagerService : Réception d'un nouveau context.");
+		System.out.println("ManagerService : Rï¿½ception d'un nouveau context.");
 		currentBasicContext = Context.getByDescriptor(newContext);
-		System.out.println("ManagerService : Contexte courant mis à jour - "
+		System.out.println("ManagerService : Contexte courant mis ï¿½ jour - "
 				+ newContext);
 		computeComplexContext();
 	}
 
 	@Override
 	public void pushNewBasicContext(List<String> newMultipleContext) {
-		//Utilisée ou non selon l'implémentation que l'on va choisir
+		//Utilisï¿½e ou non selon l'implï¿½mentation que l'on va choisir
 	}
 
 	private void computeComplexContext() {
@@ -32,11 +32,11 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 				.println("Prise en compte du dernier contexte transmis par le ListenerService ("
 						+ currentBasicContext.descriptor
 						+ ") et demande "
-						+ "auprès du TimeOfTheDayService.");
+						+ "auprï¿½s du TimeOfTheDayService.");
 		System.out
-				.println("Sauvegarde du contexte complexe calculé et trasmission à l'Activator service");
+				.println("Sauvegarde du contexte complexe calculï¿½ et trasmission ï¿½ l'Activator service");
 		
-		activatorService.applyContext(currentBasicContext+":"+Context.SALLEDEBAIN.descriptor);
+		activatorService.applyContext(currentBasicContext+":");
 	}
 
 	/** Component Lifecycle Method */

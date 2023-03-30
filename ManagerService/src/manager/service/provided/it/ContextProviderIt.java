@@ -6,8 +6,9 @@ public interface ContextProviderIt {
 	
 	public List<String> getAllContext();
 	
-	public String getContextActif();
-	public String getContextInactif();
-	public String getContextSalleDeBain();
+	public String getContextActifDescriptor();
+	public String getContextInactifDescriptor();
+	public String getContextTropChaudDescriptor();
+	public String getContextTropFroidDescriptor();
 
 }
