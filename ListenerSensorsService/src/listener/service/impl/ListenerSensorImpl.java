@@ -110,11 +110,8 @@ public class ListenerSensorImpl implements DeviceListener {
 	public void deviceEvent(GenericDevice device, Object value) {
 		String detectorLocation = (String) device.getPropertyValue("Location");
 		System.out.println("movement detected in " + detectorLocation);
-		
-		System.out.println("ListenerService : D�but calcul d'un nouveau contexte simple :");
-		String context = contextProvider.getContextActifDescriptor();
-		System.out.println("ListenerService : Fin du calcul, transmission au ManagerService. ");
-		managerProvider.pushNewBasicContext(context);
+		System.out.println("Ping du manager");
+		managerProvider.movementIn(detectorLocation);
 
 	}
 
@@ -126,8 +123,6 @@ public class ListenerSensorImpl implements DeviceListener {
 	public void devicePropertyModified(GenericDevice device,
 			String propertyName, Object oldValue, Object newValue) {
 
-		//TODO
-
 		System.out.println("devicePropertyModified called on device: " + device
 				+ " with property: " + propertyName + " old value: " + oldValue
 				+ " and new value: " + newValue);
@@ -138,7 +133,13 @@ public class ListenerSensorImpl implements DeviceListener {
 				// get the location where the sensor is:
 				String detectorLocation = (String) device
 						.getPropertyValue("Location");
-				System.out.println("presence detected in " + detectorLocation);
+				if((Boolean) newValue){
+					System.out.println("presence detected in " + detectorLocation);
+					managerProvider.peopleIn(detectorLocation);
+				} else {
+					System.out.println("no more presence in " +detectorLocation);
+					managerProvider.peopleOut(detectorLocation);
+				}
 			}
 		}
 

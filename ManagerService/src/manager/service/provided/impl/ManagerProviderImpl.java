@@ -2,6 +2,8 @@ package manager.service.provided.impl;
 
 import java.util.List;
 
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.LocalAttribute;
+
 import manager.service.provided.it.ManagerProviderIt;
 import manager.service.utils.Context;
 import activator.service.provided.ActivatorServiceIT;
@@ -13,8 +15,8 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	private ActivatorServiceIT activatorService;
 
 	@Override
-	public void pushNewBasicContext(String newContext) {
-		System.out.println("ManagerService : R�ception d'un nouveau context.");
+	public void pushNewBasicContext(String location, String newContext) {
+		System.out.println("ManagerService : Réception d'un nouveau context.");
 		currentBasicContext = Context.getByDescriptor(newContext);
 		System.out.println("ManagerService : Contexte courant mis � jour - "
 				+ newContext);
@@ -47,6 +49,21 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	/** Component Lifecycle Method */
 	public void start() {
 		System.out.println("Service ManagerProvider started !");
+	}
+
+	@Override
+	public void peopleIn(String location) {
+		System.out.println("Quelqu'un dans : "+location);
+	}
+
+	@Override
+	public void peopleOut(String location) {
+		System.out.println("Plus personne dans : "+location);
+	}
+
+	@Override
+	public void movementIn(String location) {
+		System.out.println("(Ping) movement detected in : " + location);
 	}
 
 }

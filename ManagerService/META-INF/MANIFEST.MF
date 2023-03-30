@@ -67,8 +67,11 @@ iPOJO-Components: instance { $component="ContextProvider" $name="Conte
  atorService" $type="activator.service.provided.ActivatorServiceIT" }f
  ield { $name="currentBasicContext" $type="manager.service.utils.Conte
  xt" }method { $name="pushNewBasicContext" $arguments="{java.lang.Stri
- ng}" $names="{newContext}" }method { $name="pushNewBasicContext" $arg
- uments="{java.util.List}" $names="{newMultipleContext}" }method { $na
- me="computeComplexContext" }method { $name="stop" }method { $name="st
- art" }}}
+ ng,java.lang.String}" $names="{location,newContext}" }method { $name=
+ "pushNewBasicContext" $arguments="{java.util.List}" $names="{newMulti
+ pleContext}" }method { $name="computeComplexContext" }method { $name=
+ "stop" }method { $name="start" }method { $name="peopleIn" $arguments=
+ "{java.lang.String}" $names="{location}" }method { $name="peopleOut" 
+ $arguments="{java.lang.String}" $names="{location}" }method { $name="
+ movementIn" $arguments="{java.lang.String}" $names="{location}" }}}
 
