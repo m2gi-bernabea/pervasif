@@ -66,12 +66,20 @@ iPOJO-Components: instance { $component="ContextProvider" $name="Conte
  "manager.service.provided.it.ManagerProviderIt" }field { $name="activ
  atorService" $type="activator.service.provided.ActivatorServiceIT" }f
  ield { $name="currentBasicContext" $type="manager.service.utils.Conte
- xt" }method { $name="pushNewBasicContext" $arguments="{java.lang.Stri
- ng,java.lang.String}" $names="{location,newContext}" }method { $name=
- "pushNewBasicContext" $arguments="{java.util.List}" $names="{newMulti
- pleContext}" }method { $name="computeComplexContext" }method { $name=
- "stop" }method { $name="start" }method { $name="peopleIn" $arguments=
- "{java.lang.String}" $names="{location}" }method { $name="peopleOut" 
- $arguments="{java.lang.String}" $names="{location}" }method { $name="
- movementIn" $arguments="{java.lang.String}" $names="{location}" }}}
+ xt" }field { $name="localizedContext" $type="java.util.HashMap" }meth
+ od { $name="pushNewBasicContext" $arguments="{java.lang.String,java.l
+ ang.String}" $names="{location,newContext}" }method { $name="pushNewB
+ asicContext" $arguments="{java.util.List}" $names="{newMultipleContex
+ t}" }method { $name="computeComplexContext" }method { $name="stop" }m
+ ethod { $name="start" }method { $name="peopleIn" $arguments="{java.la
+ ng.String}" $names="{location}" }method { $name="peopleOut" $argument
+ s="{java.lang.String}" $names="{location}" }method { $name="movementI
+ n" $arguments="{java.lang.String}" $names="{location}" }method { $nam
+ e="updatePresence" $arguments="{java.lang.String,boolean}" $names="{l
+ ocation,in}" }method { $name="cleanContext" $arguments="{java.lang.St
+ ring,manager.service.utils.Context}" $names="{location,contextToClean
+ }" }method { $name="checkTime" $arguments="{java.lang.String}" $names
+ ="{location}" }method { $name="updateActivity" $arguments="{java.lang
+ .String}" $names="{location}" }method { $name="checkKnownLocation" $a
+ rguments="{java.lang.String}" $names="{location}" }}}
 

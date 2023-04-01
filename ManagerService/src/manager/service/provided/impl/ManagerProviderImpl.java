@@ -1,5 +1,8 @@
 package manager.service.provided.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.LocalAttribute;
@@ -13,6 +16,8 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	private Context currentBasicContext;
 	/** Field for activatorService dependency */
 	private ActivatorServiceIT activatorService;
+	
+	private HashMap<String, List<Context>> localizedContext;
 
 	@Override
 	public void pushNewBasicContext(String location, String newContext) {
@@ -44,26 +49,95 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	/** Component Lifecycle Method */
 	public void stop() {
 		System.out.println("Service ManagerProvider stopped !");
+		localizedContext = null;
 	}
 
 	/** Component Lifecycle Method */
 	public void start() {
 		System.out.println("Service ManagerProvider started !");
+		localizedContext = new HashMap<>();
 	}
 
 	@Override
 	public void peopleIn(String location) {
 		System.out.println("Quelqu'un dans : "+location);
+		checkKnownLocation(location);
+		checkTime(location);
+		updatePresence(location, true);
 	}
-
+	
 	@Override
 	public void peopleOut(String location) {
 		System.out.println("Plus personne dans : "+location);
+		checkKnownLocation(location);
+		checkTime(location);
+		updatePresence(location, false);
 	}
 
 	@Override
 	public void movementIn(String location) {
 		System.out.println("(Ping) movement detected in : " + location);
+		checkKnownLocation(location);
+		updateActivity(location);
+	}
+
+	private synchronized void updatePresence(String location, boolean in) {
+		if(in) {
+			cleanContext(location, Context.VIDE);
+			if(!localizedContext.get(location).contains(Context.OCCUPE)) {
+				localizedContext.get(location).add(Context.OCCUPE);
+				System.out.println("From Manager Service : Ajout contexte "+Context.OCCUPE.descriptor+" dans "+location);
+			}
+		} else {
+			cleanContext(location, Context.OCCUPE);
+			if(!localizedContext.get(location).contains(Context.VIDE)) {
+				localizedContext.get(location).add(Context.VIDE);
+				System.out.println("From Manager Service : Ajout contexte "+Context.VIDE.descriptor+" dans "+location);
+			}
+		}
+	}
+
+	private synchronized void cleanContext(String location, Context contextToClean) {
+		if(localizedContext.get(location).remove(contextToClean))
+			System.out.println("From Manager Service : Nettayage du contexte "+contextToClean.descriptor+" dans "+location);
+	}
+
+	private synchronized void checkTime(String location) {
+		//Appel TimeOfTheDay pour vérifier si l'accès est interdit ou si couvre feu (hors horaires)
+		if(Math.random() > 0.5) {
+			System.out.println("From Manager Service : Hors horaires définis par le régime.");
+			localizedContext.get(location).removeAll(Arrays.asList(Context.values()));
+			if(!location.equalsIgnoreCase("bedroom")) {
+				localizedContext.get(location).add(Context.ACCESINTERDIT);
+			} else {
+				System.out.println("From Manager Service : Presence obligatoire dans "+location);
+			}
+			
+			localizedContext.get(location).add(Context.COUVREFEU);		
+		} else {
+			System.out.println("From Manager Service : Dans les horaires définis par le régime.");
+		}
+	}
+	
+	private synchronized void updateActivity(String location) {
+		//Supprimme le contexte INACTIF s'il existe
+		cleanContext(location, Context.INACTIF);
+		
+		if(!localizedContext.get(location).contains(Context.ACTIF)) {
+			System.out.println("From Manager Service : Ajout contexte ACTIF dans "+location);
+			localizedContext.get(location).add(Context.ACTIF);
+		}
+		
+	}
+
+	private synchronized void checkKnownLocation(String location) {
+		if(!localizedContext.containsKey(location)) {
+			System.out.println("From Manager Service : Nouvelle zone ("+location+") ajoutée.");
+			localizedContext.put(location, new ArrayList<Context>());
+		} else {
+			System.out.println("From Manager Service : Zone ("+location+") déjà découverte.");
+		}
+		
 	}
 
 }

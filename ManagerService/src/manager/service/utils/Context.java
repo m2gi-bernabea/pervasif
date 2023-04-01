@@ -3,6 +3,8 @@ package manager.service.utils;
 public enum Context {
 	ACTIF("actif"),
 	INACTIF("inactif"),
+	OCCUPE("piece occupe"),
+	VIDE("piece vide"),
 	TROPLONG("trop long"),
 	COUVREFEU("couvre feu"),
 	ACCESINTERDIT("acces interdit"),
