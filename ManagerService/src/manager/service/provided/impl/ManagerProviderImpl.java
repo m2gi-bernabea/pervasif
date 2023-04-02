@@ -21,6 +21,8 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	private HashMap<String, List<Context>> localizedContext;
 	/** Field for momentOfTheDay dependency */
 	private MomentOfTheDayIt momentOfTheDay;
+	/** *Field for storing ten minutes counter*/
+	private int tenMinutesCounter = 0;
 
 	@Override
 	public void pushNewBasicContext(String location, String newContext) {
@@ -157,6 +159,17 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 					+ ") déjà découverte.");
 		}
 
+	}
+	
+	@Override
+	public void pushTenMinutes() {
+		System.out.println("From Manager Service : pushTenMinutes called : " + this.tenMinutesCounter);
+		this.tenMinutesCounter++;
+		//Pour l'instant on déclenche des évenements au dessus de trois
+		//Pas la peine de compter plus
+		if (this.tenMinutesCounter > 3) {
+			this.tenMinutesCounter = 0;
+		}
 	}
 
 }

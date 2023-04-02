@@ -69,20 +69,21 @@ iPOJO-Components: instance { $component="ContextProvider" $name="Conte
  ded.ActivatorServiceIT" }field { $name="currentBasicContext" $type="m
  anager.service.utils.Context" }field { $name="localizedContext" $type
  ="java.util.HashMap" }field { $name="momentOfTheDay" $type="time.serv
- ice.provided.it.MomentOfTheDayIt" }method { $name="pushNewBasicContex
- t" $arguments="{java.lang.String,java.lang.String}" $names="{location
- ,newContext}" }method { $name="pushNewBasicContext" $arguments="{java
- .util.List}" $names="{newMultipleContext}" }method { $name="computeCo
- mplexContext" }method { $name="stop" }method { $name="start" }method 
- { $name="peopleIn" $arguments="{java.lang.String}" $names="{location}
- " }method { $name="peopleOut" $arguments="{java.lang.String}" $names=
- "{location}" }method { $name="movementIn" $arguments="{java.lang.Stri
- ng}" $names="{location}" }method { $name="updatePresence" $arguments=
- "{java.lang.String,boolean}" $names="{location,in}" }method { $name="
- cleanContext" $arguments="{java.lang.String,manager.service.utils.Con
- text}" $names="{location,contextToClean}" }method { $name="checkTime"
-  $arguments="{java.lang.String}" $names="{location}" }method { $name=
- "updateActivity" $arguments="{java.lang.String}" $names="{location}" 
- }method { $name="checkKnownLocation" $arguments="{java.lang.String}" 
- $names="{location}" }}}
+ ice.provided.it.MomentOfTheDayIt" }field { $name="tenMinutesCounter" 
+ $type="int" }method { $name="pushNewBasicContext" $arguments="{java.l
+ ang.String,java.lang.String}" $names="{location,newContext}" }method 
+ { $name="pushNewBasicContext" $arguments="{java.util.List}" $names="{
+ newMultipleContext}" }method { $name="computeComplexContext" }method 
+ { $name="stop" }method { $name="start" }method { $name="peopleIn" $ar
+ guments="{java.lang.String}" $names="{location}" }method { $name="peo
+ pleOut" $arguments="{java.lang.String}" $names="{location}" }method {
+  $name="movementIn" $arguments="{java.lang.String}" $names="{location
+ }" }method { $name="updatePresence" $arguments="{java.lang.String,boo
+ lean}" $names="{location,in}" }method { $name="cleanContext" $argumen
+ ts="{java.lang.String,manager.service.utils.Context}" $names="{locati
+ on,contextToClean}" }method { $name="checkTime" $arguments="{java.lan
+ g.String}" $names="{location}" }method { $name="updateActivity" $argu
+ ments="{java.lang.String}" $names="{location}" }method { $name="check
+ KnownLocation" $arguments="{java.lang.String}" $names="{location}" }m
+ ethod { $name="pushTenMinutes" }}}
 

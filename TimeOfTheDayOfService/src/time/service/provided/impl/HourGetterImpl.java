@@ -19,6 +19,7 @@ public class HourGetterImpl implements MomentOfTheDayIt {
 
 	@Override
 	public Integer getCurrentHourOfTheDay() {
+		//Il faut qu'on demarre à minuit
 		return (int) (clock.getElapsedTime() / 1000 / 60 / 60 % 24);
 	}
 

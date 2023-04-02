@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipojo xmlns="org.apache.felix.ipojo">
+  <component classname="TimerNotifierImpl" name="TimerNotifier">
+    <requires specification="fr.liglab.adele.icasa.clockservice.Clock" field="clock"/>
+    <callback method="start" transition="validate"/>
+    <callback method="stop" transition="invalidate"/>
+    <requires specification="manager.service.provided.it.ManagerProviderIt" field="managerProvider"/>
+  </component>
+  <instance component="TimerNotifier" name="TimerNotifier-1"/>
+</ipojo>

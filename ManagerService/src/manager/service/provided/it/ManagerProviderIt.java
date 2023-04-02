@@ -14,4 +14,6 @@ public interface ManagerProviderIt {
 	
 	public void peopleOut(String location);
 
+	public void pushTenMinutes();
+
 }
