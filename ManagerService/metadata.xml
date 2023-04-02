@@ -11,6 +11,7 @@
     <callback method="start" transition="validate"/>
     <callback method="stop" transition="invalidate"/>
     <requires specification="activator.service.provided.ActivatorServiceIT" field="activatorService"/>
+    <requires specification="time.service.provided.it.MomentOfTheDayIt" field="momentOfTheDay"/>
   </component>
   <instance component="ManagerProvider" name="ManagerProvider-2"/>
 </ipojo>

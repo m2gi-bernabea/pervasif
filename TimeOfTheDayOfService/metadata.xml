@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ipojo xmlns="org.apache.felix.ipojo">
+  <component classname="time.service.provided.impl.HourGetterImpl" name="HourGetter">
+    <provides specifications="time.service.provided.it.MomentOfTheDayIt"/>
+    <callback method="start" transition="validate"/>
+    <callback method="stop" transition="invalidate"/>
+    <requires specification="fr.liglab.adele.icasa.clockservice.Clock" field="clock"/>
+  </component>
+  <instance component="HourGetter" name="HourGetter-1"/>
 </ipojo>

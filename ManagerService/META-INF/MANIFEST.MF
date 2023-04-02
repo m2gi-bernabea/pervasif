@@ -41,7 +41,7 @@ Import-Package: activator.service.provided, fr.liglab.adele.icasa, fr.
  ipt.executor, fr.liglab.adele.icasa.simulator.services, org.apache.fe
  lix.ipojo;version="[1.12.1,2.0.0)", org.apache.felix.ipojo.architectu
  re;version="[1.12.1,2.0.0)", org.json, org.osgi.service.cm;version=1.
- 2, org.osgi.service.log;version=1.3
+ 2, org.osgi.service.log;version=1.3, time.service.provided.it
 iPOJO-Components: instance { $component="ContextProvider" $name="Conte
  xtProvider-1" }instance { $component="ManagerProvider" $name="Manager
  Provider-2" }component { $classname="manager.service.provided.impl.Co
@@ -61,25 +61,28 @@ iPOJO-Components: instance { $component="ContextProvider" $name="Conte
  ager.service.provided.it.ManagerProviderIt" }callback { $method="star
  t" $transition="validate" }callback { $method="stop" $transition="inv
  alidate" }requires { $specification="activator.service.provided.Activ
- atorServiceIT" $field="activatorService" }manipulation { $classname="
- manager.service.provided.impl.ManagerProviderImpl" interface { $name=
- "manager.service.provided.it.ManagerProviderIt" }field { $name="activ
- atorService" $type="activator.service.provided.ActivatorServiceIT" }f
- ield { $name="currentBasicContext" $type="manager.service.utils.Conte
- xt" }field { $name="localizedContext" $type="java.util.HashMap" }meth
- od { $name="pushNewBasicContext" $arguments="{java.lang.String,java.l
- ang.String}" $names="{location,newContext}" }method { $name="pushNewB
- asicContext" $arguments="{java.util.List}" $names="{newMultipleContex
- t}" }method { $name="computeComplexContext" }method { $name="stop" }m
- ethod { $name="start" }method { $name="peopleIn" $arguments="{java.la
- ng.String}" $names="{location}" }method { $name="peopleOut" $argument
- s="{java.lang.String}" $names="{location}" }method { $name="movementI
- n" $arguments="{java.lang.String}" $names="{location}" }method { $nam
- e="updatePresence" $arguments="{java.lang.String,boolean}" $names="{l
- ocation,in}" }method { $name="cleanContext" $arguments="{java.lang.St
- ring,manager.service.utils.Context}" $names="{location,contextToClean
- }" }method { $name="checkTime" $arguments="{java.lang.String}" $names
- ="{location}" }method { $name="updateActivity" $arguments="{java.lang
- .String}" $names="{location}" }method { $name="checkKnownLocation" $a
- rguments="{java.lang.String}" $names="{location}" }}}
+ atorServiceIT" $field="activatorService" }requires { $specification="
+ time.service.provided.it.MomentOfTheDayIt" $field="momentOfTheDay" }m
+ anipulation { $classname="manager.service.provided.impl.ManagerProvid
+ erImpl" interface { $name="manager.service.provided.it.ManagerProvide
+ rIt" }field { $name="activatorService" $type="activator.service.provi
+ ded.ActivatorServiceIT" }field { $name="currentBasicContext" $type="m
+ anager.service.utils.Context" }field { $name="localizedContext" $type
+ ="java.util.HashMap" }field { $name="momentOfTheDay" $type="time.serv
+ ice.provided.it.MomentOfTheDayIt" }method { $name="pushNewBasicContex
+ t" $arguments="{java.lang.String,java.lang.String}" $names="{location
+ ,newContext}" }method { $name="pushNewBasicContext" $arguments="{java
+ .util.List}" $names="{newMultipleContext}" }method { $name="computeCo
+ mplexContext" }method { $name="stop" }method { $name="start" }method 
+ { $name="peopleIn" $arguments="{java.lang.String}" $names="{location}
+ " }method { $name="peopleOut" $arguments="{java.lang.String}" $names=
+ "{location}" }method { $name="movementIn" $arguments="{java.lang.Stri
+ ng}" $names="{location}" }method { $name="updatePresence" $arguments=
+ "{java.lang.String,boolean}" $names="{location,in}" }method { $name="
+ cleanContext" $arguments="{java.lang.String,manager.service.utils.Con
+ text}" $names="{location,contextToClean}" }method { $name="checkTime"
+  $arguments="{java.lang.String}" $names="{location}" }method { $name=
+ "updateActivity" $arguments="{java.lang.String}" $names="{location}" 
+ }method { $name="checkKnownLocation" $arguments="{java.lang.String}" 
+ $names="{location}" }}}
 
