@@ -13,53 +13,69 @@ import time.service.provided.it.MomentOfTheDayIt;
 
 public class ManagerProviderImpl implements ManagerProviderIt {
 
-	private Context currentBasicContext;
 	private ActivatorServiceIT activatorService;
 	private HashMap<String, List<Context>> localizedContext;
 	private MomentOfTheDayIt momentOfTheDay;
 	private Map<String, Integer> tenMinutesCounter;
+	private static final String kitchenLocation = "kitchen";
+	private static final String loungeLocation = "lounge";
+	private static final String bedroomLocation = "bedroom";
+	private static final String bathroomLocation = "bathroom";
+	private boolean isCurfew = false;
 
 	private void computeContext(String location) {
 		System.out.println("Calcul du contexte pour la zone : " +location);
 		
+		if(this.isCurfew)
+			this.activatorService.placeCurfew();
+		
 		switch (location) {
-			case "kitchen" : computeKitchenContext(this.localizedContext.get(location));
+			case kitchenLocation : computeKitchenContext(this.localizedContext.get(location), location);
 				break;
-			case "bathroom" : computeBathroomContext(this.localizedContext.get(location));
+			case bathroomLocation : computeBathroomContext(this.localizedContext.get(location), location);
 				break;
-			case "lounge" : computeLoungeContext(this.localizedContext.get(location));
+			case loungeLocation : computeLoungeContext(this.localizedContext.get(location),location);
 				break;
-			case "bedroom" : computeBedroomContext(this.localizedContext.get(location));
+			case bedroomLocation : computeBedroomContext(this.localizedContext.get(location), location);
 				break;
 			default:
 				break;
 		}
 	}
 	
-	public void computeKitchenContext(List<Context> context) {
-		if(context.contains(Context.OCCUPE) && context.contains(Context.ACCESINTERDIT)) 
-			this.activatorService.activateSpeaker("kitchen");
+	public void computeKitchenContext(List<Context> context, String location) {
+		if(context.contains(Context.OCCUPE) && context.contains(Context.ACCESINTERDIT)) {
+			this.activatorService.activateSiren(location);
+			//this.activatorService.activateSpeaker(location); TODO rétablir activation du speaker
+		}
 	}
 	
-	public void computeBathroomContext(List<Context> context) {
-		if(context.contains(Context.OCCUPE) && context.contains(Context.ACCESINTERDIT)) 
-			this.activatorService.activateSpeaker("bathroom");
+	public void computeBathroomContext(List<Context> context, String location) {
+		if(context.contains(Context.OCCUPE) && context.contains(Context.ACCESINTERDIT)) {
+			this.activatorService.activateSiren(location);
+			//this.activatorService.activateSpeaker(location); TODO rétablir activation du speaker
+		}
 		
-		if(this.tenMinutesCounter.get("bathroom") == 1 && context.contains(Context.OCCUPE))
-			this.activatorService.activateSprinkler("bathroom");
+		if(this.tenMinutesCounter.get(location) == 1 && context.contains(Context.OCCUPE))
+			this.activatorService.activateSprinkler(location);
+		
+		if(!context.contains(Context.OCCUPE))
+			this.activatorService.disableLight(location);
 	}
 	
-	public void computeBedroomContext(List<Context> context) {
+	public void computeBedroomContext(List<Context> context, String location) {
 		if(context.contains(Context.ACCESINTERDIT))
-			this.activatorService.activateSiren("lounge");
+			this.activatorService.activateSiren(location);
 	}
 	
-	public void computeLoungeContext(List<Context> context) {
-		if (this.tenMinutesCounter.get("lounge") == 3 && context.contains(Context.OCCUPE))
-			this.activatorService.activateSiren("lounge");
+	public void computeLoungeContext(List<Context> context, String location) {
+		if (this.tenMinutesCounter.get(location) == 3 && context.contains(Context.OCCUPE))
+			this.activatorService.activateSiren(location);
 		
-		if (context.contains(Context.ACCESINTERDIT) && context.contains(Context.OCCUPE))
-			this.activatorService.activateSpeaker("lounge");
+		if (context.contains(Context.ACCESINTERDIT) && context.contains(Context.OCCUPE)) {
+			this.activatorService.activateSiren(location);
+			// this.activatorService.activateSpeaker(location); TODO rétablir activation du speaker
+		}
 	}
 	
 	/** Component Lifecycle Method */
@@ -127,22 +143,26 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 
 	private synchronized void checkTime(String location) {
 		//Appel TimeOfTheDay pour vérifier si l'accès est interdit ou si couvre feu (hors horaires)
-		System.out.println("From Manager Service : Prise en compte du time of the day : "
-				+ momentOfTheDay.getCurrentHourOfTheDay());
+		System.out.println("From Manager Service : Prise en compte du time of the day : " + momentOfTheDay.getCurrentHourOfTheDay());
+		
 		if (Math.random() > 0.5) {
 			System.out.println("From Manager Service : Hors horaires définis par le régime.");
 			localizedContext.get(location).removeAll(Arrays.asList(Context.values()));
 			
-			if (!location.equalsIgnoreCase("bedroom")) {
+			if (!location.equalsIgnoreCase("bedroom")) 
 				localizedContext.get(location).add(Context.ACCESINTERDIT);
-			} else {
+			
+			else 
 				System.out.println("From Manager Service : Presence obligatoire dans " + location);
-			}
-
-			localizedContext.get(location).add(Context.COUVREFEU);
-		} else {
+			
+			this.isCurfew = true;
+		} 
+		
+		else {
 			System.out.println("From Manager Service : Dans les horaires définis par le régime.");
+			this.isCurfew = false;
 		}
+			
 	}
 
 	private synchronized void updateActivity(String location) {
@@ -168,6 +188,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	@Override
 	public void pushTenMinutes() {
 		System.out.println("From Manager Service : pushTenMinutes called : " + this.tenMinutesCounter);
+		
 		for(String location : this.localizedContext.keySet()) {
 			this.computeContext(location);
 			int tickForRoom = this.tenMinutesCounter.get(location);

@@ -53,27 +53,28 @@ iPOJO-Components: instance { $component="ManagerProvider" $name="Manag
  Day" }manipulation { $classname="manager.service.provided.impl.Manage
  rProviderImpl" interface { $name="manager.service.provided.it.Manager
  ProviderIt" }field { $name="activatorService" $type="activator.servic
- e.provided.ActivatorServiceIT" }field { $name="currentBasicContext" $
- type="manager.service.utils.Context" }field { $name="localizedContext
- " $type="java.util.HashMap" }field { $name="momentOfTheDay" $type="ti
- me.service.provided.it.MomentOfTheDayIt" }field { $name="tenMinutesCo
- unter" $type="java.util.Map" }method { $name="computeContext" $argume
- nts="{java.lang.String}" $names="{location}" }method { $name="compute
- KitchenContext" $arguments="{java.util.List}" $names="{context}" }met
- hod { $name="computeBathroomContext" $arguments="{java.util.List}" $n
- ames="{context}" }method { $name="computeBedroomContext" $arguments="
- {java.util.List}" $names="{context}" }method { $name="computeLoungeCo
- ntext" $arguments="{java.util.List}" $names="{context}" }method { $na
- me="stop" }method { $name="start" }method { $name="peopleIn" $argumen
- ts="{java.lang.String}" $names="{location}" }method { $name="peopleOu
- t" $arguments="{java.lang.String}" $names="{location}" }method { $nam
- e="movementIn" $arguments="{java.lang.String}" $names="{location}" }m
- ethod { $name="updatePresence" $arguments="{java.lang.String,boolean}
- " $names="{location,in}" }method { $name="cleanContext" $arguments="{
- java.lang.String,manager.service.utils.Context}" $names="{location,co
- ntextToClean}" }method { $name="checkTime" $arguments="{java.lang.Str
- ing}" $names="{location}" }method { $name="updateActivity" $arguments
- ="{java.lang.String}" $names="{location}" }method { $name="checkKnown
- Location" $arguments="{java.lang.String}" $names="{location}" }method
-  { $name="pushTenMinutes" }}}
+ e.provided.ActivatorServiceIT" }field { $name="isCurfew" $type="boole
+ an" }field { $name="localizedContext" $type="java.util.HashMap" }fiel
+ d { $name="momentOfTheDay" $type="time.service.provided.it.MomentOfTh
+ eDayIt" }field { $name="tenMinutesCounter" $type="java.util.Map" }met
+ hod { $name="computeContext" $arguments="{java.lang.String}" $names="
+ {location}" }method { $name="computeKitchenContext" $arguments="{java
+ .util.List,java.lang.String}" $names="{context,location}" }method { $
+ name="computeBathroomContext" $arguments="{java.util.List,java.lang.S
+ tring}" $names="{context,location}" }method { $name="computeBedroomCo
+ ntext" $arguments="{java.util.List,java.lang.String}" $names="{contex
+ t,location}" }method { $name="computeLoungeContext" $arguments="{java
+ .util.List,java.lang.String}" $names="{context,location}" }method { $
+ name="stop" }method { $name="start" }method { $name="peopleIn" $argum
+ ents="{java.lang.String}" $names="{location}" }method { $name="people
+ Out" $arguments="{java.lang.String}" $names="{location}" }method { $n
+ ame="movementIn" $arguments="{java.lang.String}" $names="{location}" 
+ }method { $name="updatePresence" $arguments="{java.lang.String,boolea
+ n}" $names="{location,in}" }method { $name="cleanContext" $arguments=
+ "{java.lang.String,manager.service.utils.Context}" $names="{location,
+ contextToClean}" }method { $name="checkTime" $arguments="{java.lang.S
+ tring}" $names="{location}" }method { $name="updateActivity" $argumen
+ ts="{java.lang.String}" $names="{location}" }method { $name="checkKno
+ wnLocation" $arguments="{java.lang.String}" $names="{location}" }meth
+ od { $name="pushTenMinutes" }}}
 

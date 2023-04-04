@@ -6,6 +6,7 @@ import fr.liglab.adele.icasa.device.GenericDevice;
 import fr.liglab.adele.icasa.device.security.Siren;
 import fr.liglab.adele.icasa.device.light.BinaryLight;
 import fr.liglab.adele.icasa.device.sound.Speaker;
+import fr.liglab.adele.icasa.device.sprinkler.Sprinkler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 	private Siren[] sirens;
 	private BinaryLight[] binaryLights;
 	private Speaker[] speakers;
+	private Sprinkler[] sprinklers;
 	private static final String LOCATION_PROPERTY_NAME = "Location";
 
 	/** Component Lifecycle Method */
@@ -55,13 +57,21 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 	private synchronized List<Speaker> getSpeakersFromLocation(String location) {
 		List<Speaker> speakersLocation = new ArrayList<Speaker>();
 
-		for (Speaker speaker : speakers) {
-			if (speaker.getPropertyValue(LOCATION_PROPERTY_NAME).equals(
-					location))
+		for (Speaker speaker : this.speakers) 
+			if (speaker.getPropertyValue(LOCATION_PROPERTY_NAME).equals(location))
 				speakersLocation.add(speaker);
-		}
 
 		return speakersLocation;
+	}
+	
+	private synchronized List<Sprinkler> getSprinklerFromLocation(String location) {
+		List<Sprinkler> sprinklersLocation = new ArrayList<Sprinkler>();
+		
+		for (Sprinkler sprinkler : this.sprinklers) 
+			if (sprinkler.getPropertyValue(LOCATION_PROPERTY_NAME).equals(location))
+				sprinklersLocation.add(sprinkler);
+		
+		return sprinklersLocation;
 	}
 
 	@Override
@@ -114,21 +124,29 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 			List<Speaker> sameLocationSpeakers = getSpeakersFromLocation(room);
 			for (Speaker speaker : sameLocationSpeakers) {
 				//speaker.setAudioSource(audioSource);
-				speaker.notify(); //Que fait la méthode notify ? Trouver doc 
+				//speaker.notify(); //TODO Chercher ce que fait notify()
 			}
 		}
 	}
 	
 	@Override
 	public void activateSprinkler(String... rooms) {
-		// TODO Auto-generated method stub
-		
+		for (String room : rooms) {
+			List<Sprinkler> sameLocationSprinklers = getSprinklerFromLocation(room);
+
+			for (Sprinkler sprinkler : sameLocationSprinklers)
+				sprinkler.turnOn();
+		}
 	}
 
 	@Override
 	public void disableSprinkler(String... rooms) {
-		// TODO Auto-generated method stub
-		
+		for (String room : rooms) {
+			List<Sprinkler> sameLocationSprinklers = getSprinklerFromLocation(room);
+
+			for (Sprinkler sprinkler : sameLocationSprinklers)
+				sprinkler.turnOff();
+		}
 	}
 
 	@Override
@@ -170,7 +188,6 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 	@Override
 	public void deviceAdded(GenericDevice arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -182,7 +199,6 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 	@Override
 	public void devicePropertyAdded(GenericDevice arg0, String arg1) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

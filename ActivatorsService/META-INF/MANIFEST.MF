@@ -54,11 +54,14 @@ iPOJO-Components: instance { $component="ActivatorProvider" $name="Act
  r.liglab.adele.icasa.device.light.BinaryLight[]" }field { $name="sire
  ns" $type="fr.liglab.adele.icasa.device.security.Siren[]" }field { $n
  ame="speakers" $type="fr.liglab.adele.icasa.device.sound.Speaker[]" }
- method { $name="stop" }method { $name="start" }method { $name="getBin
- aryLightFromLocation" $return="java.util.List" $arguments="{java.lang
- .String}" $names="{location}" }method { $name="getSirensFromLocation"
-  $return="java.util.List" $arguments="{java.lang.String}" $names="{lo
- cation}" }method { $name="getSpeakersFromLocation" $return="java.util
+ field { $name="sprinklers" $type="fr.liglab.adele.icasa.device.sprink
+ ler.Sprinkler[]" }method { $name="stop" }method { $name="start" }meth
+ od { $name="getBinaryLightFromLocation" $return="java.util.List" $arg
+ uments="{java.lang.String}" $names="{location}" }method { $name="getS
+ irensFromLocation" $return="java.util.List" $arguments="{java.lang.St
+ ring}" $names="{location}" }method { $name="getSpeakersFromLocation" 
+ $return="java.util.List" $arguments="{java.lang.String}" $names="{loc
+ ation}" }method { $name="getSprinklerFromLocation" $return="java.util
  .List" $arguments="{java.lang.String}" $names="{location}" }method { 
  $name="activateLight" $arguments="{java.lang.String[]}" $names="{room
  s}" }method { $name="disableLight" $arguments="{java.lang.String[]}" 
