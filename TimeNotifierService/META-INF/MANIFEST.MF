@@ -47,9 +47,11 @@ iPOJO-Components: instance { $component="TimerNotifier" $name="TimerNo
  Clock" $field="clock" }requires { $specification="manager.service.pro
  vided.it.ManagerProviderIt" $field="managerProvider" }callback { $met
  hod="start" $transition="validate" }callback { $method="stop" $transi
- tion="invalidate" }manipulation { $classname="TimerNotifierImpl" fiel
- d { $name="clock" $type="fr.liglab.adele.icasa.clockservice.Clock" }f
- ield { $name="managerProvider" $type="manager.service.provided.it.Man
- agerProviderIt" }method { $name="stop" }method { $name="start" }inner
-  { $name="1" method { $name="run" }}}}
+ tion="invalidate" }manipulation { $classname="TimerNotifierImpl" inte
+ rface { $name="fr.liglab.adele.icasa.service.scheduler.PeriodicRunnab
+ le" }field { $name="clock" $type="fr.liglab.adele.icasa.clockservice.
+ Clock" }field { $name="managerProvider" $type="manager.service.provid
+ ed.it.ManagerProviderIt" }method { $name="stop" }method { $name="star
+ t" }method { $name="run" }method { $name="getPeriod" $return="long" }
+ method { $name="getUnit" $return="java.util.concurrent.TimeUnit" }}}
 
