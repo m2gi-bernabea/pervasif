@@ -116,11 +116,15 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		//Appel TimeOfTheDay pour vérifier si l'accès est interdit ou si couvre feu (hors horaires)
 		System.out.println("From Manager Service : Prise en compte du time of the day : "
 				+ momentOfTheDay.getCurrentHourOfTheDay());
-		if (Math.random() > 0.5) {
+		int hour = momentOfTheDay.getCurrentHourOfTheDay() % 24 ;
+		if ((hour >= 22 && hour <= 24) || (hour >= 0 && hour <= 2)) {
 			System.out
 					.println("From Manager Service : Hors horaires définis par le régime.");
-			localizedContext.get(location).removeAll(
-					Arrays.asList(Context.values()));
+			localizedContext.get(location).remove(Context.ACTIF);
+			localizedContext.get(location).remove(Context.INACTIF);
+			localizedContext.get(location).remove(Context.OCCUPE);
+			localizedContext.get(location).remove(Context.VIDE);
+			localizedContext.get(location).remove(Context.TROPLONG);
 			if (!location.equalsIgnoreCase("bedroom")) {
 				localizedContext.get(location).add(Context.ACCESINTERDIT);
 			} else {
@@ -170,6 +174,12 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		if (this.tenMinutesCounter > 3) {
 			this.tenMinutesCounter = 0;
 		}
+	}
+
+	@Override
+	public void newTemperature(String location, double temp) {
+		System.out.println("Manager Service : nouvelle température "+ temp + " dans " + location);
+		
 	}
 
 }

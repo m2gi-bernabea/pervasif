@@ -85,5 +85,6 @@ iPOJO-Components: instance { $component="ContextProvider" $name="Conte
  g.String}" $names="{location}" }method { $name="updateActivity" $argu
  ments="{java.lang.String}" $names="{location}" }method { $name="check
  KnownLocation" $arguments="{java.lang.String}" $names="{location}" }m
- ethod { $name="pushTenMinutes" }}}
+ ethod { $name="pushTenMinutes" }method { $name="newTemperature" $argu
+ ments="{java.lang.String,double}" $names="{location,temp}" }}}
 
