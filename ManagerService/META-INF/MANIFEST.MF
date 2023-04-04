@@ -42,48 +42,38 @@ Import-Package: activator.service.provided, fr.liglab.adele.icasa, fr.
  lix.ipojo;version="[1.12.1,2.0.0)", org.apache.felix.ipojo.architectu
  re;version="[1.12.1,2.0.0)", org.json, org.osgi.service.cm;version=1.
  2, org.osgi.service.log;version=1.3, time.service.provided.it
-iPOJO-Components: instance { $component="ContextProvider" $name="Conte
- xtProvider-1" }instance { $component="ManagerProvider" $name="Manager
- Provider-2" }component { $classname="manager.service.provided.impl.Co
- ntextProviderImpl" $name="ContextProvider" provides { $specifications
- ="manager.service.provided.it.ContextProviderIt" }callback { $method=
- "start" $transition="validate" }callback { $method="stop" $transition
- ="invalidate" }manipulation { $classname="manager.service.provided.im
- pl.ContextProviderImpl" interface { $name="manager.service.provided.i
- t.ContextProviderIt" }method { $name="getAllContext" $return="java.ut
- il.List" }method { $name="getContextActifDescriptor" $return="java.la
- ng.String" }method { $name="getContextInactifDescriptor" $return="jav
- a.lang.String" }method { $name="stop" }method { $name="start" }method
-  { $name="getContextTropChaudDescriptor" $return="java.lang.String" }
- method { $name="getContextTropFroidDescriptor" $return="java.lang.Str
- ing" }}}component { $classname="manager.service.provided.impl.Manager
- ProviderImpl" $name="ManagerProvider" provides { $specifications="man
- ager.service.provided.it.ManagerProviderIt" }callback { $method="star
- t" $transition="validate" }callback { $method="stop" $transition="inv
- alidate" }requires { $specification="activator.service.provided.Activ
- atorServiceIT" $field="activatorService" }requires { $specification="
- time.service.provided.it.MomentOfTheDayIt" $field="momentOfTheDay" }m
- anipulation { $classname="manager.service.provided.impl.ManagerProvid
- erImpl" interface { $name="manager.service.provided.it.ManagerProvide
- rIt" }field { $name="activatorService" $type="activator.service.provi
- ded.ActivatorServiceIT" }field { $name="currentBasicContext" $type="m
- anager.service.utils.Context" }field { $name="localizedContext" $type
- ="java.util.HashMap" }field { $name="momentOfTheDay" $type="time.serv
- ice.provided.it.MomentOfTheDayIt" }field { $name="tenMinutesCounter" 
- $type="int" }method { $name="pushNewBasicContext" $arguments="{java.l
- ang.String,java.lang.String}" $names="{location,newContext}" }method 
- { $name="pushNewBasicContext" $arguments="{java.util.List}" $names="{
- newMultipleContext}" }method { $name="computeComplexContext" }method 
- { $name="stop" }method { $name="start" }method { $name="peopleIn" $ar
- guments="{java.lang.String}" $names="{location}" }method { $name="peo
- pleOut" $arguments="{java.lang.String}" $names="{location}" }method {
-  $name="movementIn" $arguments="{java.lang.String}" $names="{location
- }" }method { $name="updatePresence" $arguments="{java.lang.String,boo
- lean}" $names="{location,in}" }method { $name="cleanContext" $argumen
- ts="{java.lang.String,manager.service.utils.Context}" $names="{locati
- on,contextToClean}" }method { $name="checkTime" $arguments="{java.lan
- g.String}" $names="{location}" }method { $name="updateActivity" $argu
- ments="{java.lang.String}" $names="{location}" }method { $name="check
- KnownLocation" $arguments="{java.lang.String}" $names="{location}" }m
- ethod { $name="pushTenMinutes" }}}
+iPOJO-Components: instance { $component="ManagerProvider" $name="Manag
+ erProvider-2" }component { $classname="manager.service.provided.impl.
+ ManagerProviderImpl" $name="ManagerProvider" provides { $specificatio
+ ns="manager.service.provided.it.ManagerProviderIt" }callback { $metho
+ d="start" $transition="validate" }callback { $method="stop" $transiti
+ on="invalidate" }requires { $specification="activator.service.provide
+ d.ActivatorServiceIT" $field="activatorService" }requires { $specific
+ ation="time.service.provided.it.MomentOfTheDayIt" $field="momentOfThe
+ Day" }manipulation { $classname="manager.service.provided.impl.Manage
+ rProviderImpl" interface { $name="manager.service.provided.it.Manager
+ ProviderIt" }field { $name="activatorService" $type="activator.servic
+ e.provided.ActivatorServiceIT" }field { $name="currentBasicContext" $
+ type="manager.service.utils.Context" }field { $name="localizedContext
+ " $type="java.util.HashMap" }field { $name="momentOfTheDay" $type="ti
+ me.service.provided.it.MomentOfTheDayIt" }field { $name="tenMinutesCo
+ unter" $type="java.util.Map" }method { $name="computeContext" $argume
+ nts="{java.lang.String}" $names="{location}" }method { $name="compute
+ KitchenContext" $arguments="{java.util.List}" $names="{context}" }met
+ hod { $name="computeBathroomContext" $arguments="{java.util.List}" $n
+ ames="{context}" }method { $name="computeBedroomContext" $arguments="
+ {java.util.List}" $names="{context}" }method { $name="computeLoungeCo
+ ntext" $arguments="{java.util.List}" $names="{context}" }method { $na
+ me="stop" }method { $name="start" }method { $name="peopleIn" $argumen
+ ts="{java.lang.String}" $names="{location}" }method { $name="peopleOu
+ t" $arguments="{java.lang.String}" $names="{location}" }method { $nam
+ e="movementIn" $arguments="{java.lang.String}" $names="{location}" }m
+ ethod { $name="updatePresence" $arguments="{java.lang.String,boolean}
+ " $names="{location,in}" }method { $name="cleanContext" $arguments="{
+ java.lang.String,manager.service.utils.Context}" $names="{location,co
+ ntextToClean}" }method { $name="checkTime" $arguments="{java.lang.Str
+ ing}" $names="{location}" }method { $name="updateActivity" $arguments
+ ="{java.lang.String}" $names="{location}" }method { $name="checkKnown
+ Location" $arguments="{java.lang.String}" $names="{location}" }method
+  { $name="pushTenMinutes" }}}
 

@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ipojo xmlns="org.apache.felix.ipojo">
-  <component classname="manager.service.provided.impl.ContextProviderImpl" name="ContextProvider">
-    <provides specifications="manager.service.provided.it.ContextProviderIt"/>
-    <callback method="start" transition="validate"/>
-    <callback method="stop" transition="invalidate"/>
-  </component>
-  <instance component="ContextProvider" name="ContextProvider-1"/>
   <component classname="manager.service.provided.impl.ManagerProviderImpl" name="ManagerProvider">
     <provides specifications="manager.service.provided.it.ManagerProviderIt"/>
     <callback method="start" transition="validate"/>

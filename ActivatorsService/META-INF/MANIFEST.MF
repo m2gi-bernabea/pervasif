@@ -49,7 +49,48 @@ iPOJO-Components: instance { $component="ActivatorProvider" $name="Act
   { $method="start" $transition="validate" }callback { $method="stop" 
  $transition="invalidate" }manipulation { $classname="activator.servic
  e.provided.imp.ActivatorProviderImpl" interface { $name="activator.se
- rvice.provided.ActivatorServiceIT" }method { $name="applyContext" $ar
- guments="{java.lang.String}" $names="{context}" }method { $name="stop
- " }method { $name="start" }}}
+ rvice.provided.ActivatorServiceIT" }interface { $name="fr.liglab.adel
+ e.icasa.device.DeviceListener" }field { $name="binaryLights" $type="f
+ r.liglab.adele.icasa.device.light.BinaryLight[]" }field { $name="sire
+ ns" $type="fr.liglab.adele.icasa.device.security.Siren[]" }field { $n
+ ame="speakers" $type="fr.liglab.adele.icasa.device.sound.Speaker[]" }
+ method { $name="stop" }method { $name="start" }method { $name="getBin
+ aryLightFromLocation" $return="java.util.List" $arguments="{java.lang
+ .String}" $names="{location}" }method { $name="getSirensFromLocation"
+  $return="java.util.List" $arguments="{java.lang.String}" $names="{lo
+ cation}" }method { $name="getSpeakersFromLocation" $return="java.util
+ .List" $arguments="{java.lang.String}" $names="{location}" }method { 
+ $name="activateLight" $arguments="{java.lang.String[]}" $names="{room
+ s}" }method { $name="disableLight" $arguments="{java.lang.String[]}" 
+ $names="{rooms}" }method { $name="activateSiren" $arguments="{java.la
+ ng.String[]}" $names="{rooms}" }method { $name="disableSiren" $argume
+ nts="{java.lang.String[]}" $names="{rooms}" }method { $name="activate
+ Speaker" $arguments="{java.lang.String[]}" $names="{rooms}" }method {
+  $name="activateSprinkler" $arguments="{java.lang.String[]}" $names="
+ {rooms}" }method { $name="disableSprinkler" $arguments="{java.lang.St
+ ring[]}" $names="{rooms}" }method { $name="placeCurfew" }method { $na
+ me="bindSiren" $arguments="{fr.liglab.adele.icasa.device.security.Sir
+ en,java.util.Map}" $names="{siren,properties}" }method { $name="unbin
+ dSiren" $arguments="{fr.liglab.adele.icasa.device.security.Siren,java
+ .util.Map}" $names="{siren,properties}" }method { $name="bindBinaryLi
+ ght" $arguments="{fr.liglab.adele.icasa.device.light.BinaryLight,java
+ .util.Map}" $names="{binaryLight,properties}" }method { $name="unbind
+ binaryLight" $arguments="{fr.liglab.adele.icasa.device.light.BinaryLi
+ ght,java.util.Map}" $names="{binaryLight,properties}" }method { $name
+ ="bindSpeaker" $arguments="{fr.liglab.adele.icasa.device.sound.Speake
+ r,java.util.Map}" $names="{speaker,properties}" }method { $name="unbi
+ ndSpeaker" $arguments="{fr.liglab.adele.icasa.device.sound.Speaker,ja
+ va.util.Map}" $names="{speaker,properties}" }method { $name="deviceAd
+ ded" $arguments="{fr.liglab.adele.icasa.device.GenericDevice}" $names
+ ="{arg0}" }method { $name="deviceEvent" $arguments="{fr.liglab.adele.
+ icasa.device.GenericDevice,java.lang.Object}" $names="{arg0,arg1}" }m
+ ethod { $name="devicePropertyAdded" $arguments="{fr.liglab.adele.icas
+ a.device.GenericDevice,java.lang.String}" $names="{arg0,arg1}" }metho
+ d { $name="devicePropertyModified" $arguments="{fr.liglab.adele.icasa
+ .device.GenericDevice,java.lang.String,java.lang.Object,java.lang.Obj
+ ect}" $names="{arg0,arg1,arg2,arg3}" }method { $name="devicePropertyR
+ emoved" $arguments="{fr.liglab.adele.icasa.device.GenericDevice,java.
+ lang.String}" $names="{arg0,arg1}" }method { $name="deviceRemoved" $a
+ rguments="{fr.liglab.adele.icasa.device.GenericDevice}" $names="{arg0
+ }" }}}
 

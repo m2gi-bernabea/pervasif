@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.LocalAttribute;
+import java.util.Map;
 
 import manager.service.provided.it.ManagerProviderIt;
 import manager.service.utils.Context;
@@ -15,43 +14,54 @@ import time.service.provided.it.MomentOfTheDayIt;
 public class ManagerProviderImpl implements ManagerProviderIt {
 
 	private Context currentBasicContext;
-	/** Field for activatorService dependency */
 	private ActivatorServiceIT activatorService;
-
 	private HashMap<String, List<Context>> localizedContext;
-	/** Field for momentOfTheDay dependency */
 	private MomentOfTheDayIt momentOfTheDay;
-	/** *Field for storing ten minutes counter*/
-	private int tenMinutesCounter = 0;
+	private Map<String, Integer> tenMinutesCounter;
 
-	@Override
-	public void pushNewBasicContext(String location, String newContext) {
-		System.out.println("ManagerService : Réception d'un nouveau context.");
-		currentBasicContext = Context.getByDescriptor(newContext);
-		System.out.println("ManagerService : Contexte courant mis � jour - "
-				+ newContext);
-		computeComplexContext();
+	private void computeContext(String location) {
+		System.out.println("Calcul du contexte pour la zone : " +location);
+		
+		switch (location) {
+			case "kitchen" : computeKitchenContext(this.localizedContext.get(location));
+				break;
+			case "bathroom" : computeBathroomContext(this.localizedContext.get(location));
+				break;
+			case "lounge" : computeLoungeContext(this.localizedContext.get(location));
+				break;
+			case "bedroom" : computeBedroomContext(this.localizedContext.get(location));
+				break;
+			default:
+				break;
+		}
 	}
-
-	@Override
-	public void pushNewBasicContext(List<String> newMultipleContext) {
-		//Utilis�e ou non selon l'impl�mentation que l'on va choisir
+	
+	public void computeKitchenContext(List<Context> context) {
+		if(context.contains(Context.OCCUPE) && context.contains(Context.ACCESINTERDIT)) 
+			this.activatorService.activateSpeaker("kitchen");
 	}
-
-	private void computeComplexContext() {
-		System.out.println("Traitement d'un contexte complexe :");
-		System.out
-				.println("Prise en compte du dernier contexte transmis par le ListenerService ("
-						+ currentBasicContext.descriptor
-						+ ") et demande "
-						+ "aupr�s du TimeOfTheDayService : "
-						+ momentOfTheDay.getCurrentHourOfTheDay());
-		System.out
-				.println("Sauvegarde du contexte complexe calcul� et trasmission � l'Activator service");
-
-		activatorService.applyContext(currentBasicContext + ":");
+	
+	public void computeBathroomContext(List<Context> context) {
+		if(context.contains(Context.OCCUPE) && context.contains(Context.ACCESINTERDIT)) 
+			this.activatorService.activateSpeaker("bathroom");
+		
+		if(this.tenMinutesCounter.get("bathroom") == 1 && context.contains(Context.OCCUPE))
+			this.activatorService.activateSprinkler("bathroom");
 	}
-
+	
+	public void computeBedroomContext(List<Context> context) {
+		if(context.contains(Context.ACCESINTERDIT))
+			this.activatorService.activateSiren("lounge");
+	}
+	
+	public void computeLoungeContext(List<Context> context) {
+		if (this.tenMinutesCounter.get("lounge") == 3 && context.contains(Context.OCCUPE))
+			this.activatorService.activateSiren("lounge");
+		
+		if (context.contains(Context.ACCESINTERDIT) && context.contains(Context.OCCUPE))
+			this.activatorService.activateSpeaker("lounge");
+	}
+	
 	/** Component Lifecycle Method */
 	public void stop() {
 		System.out.println("Service ManagerProvider stopped !");
@@ -62,6 +72,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	public void start() {
 		System.out.println("Service ManagerProvider started !");
 		localizedContext = new HashMap<>();
+		this.tenMinutesCounter = new HashMap<>();
 	}
 
 	@Override
@@ -86,30 +97,32 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		checkKnownLocation(location);
 		updateActivity(location);
 	}
-
+	
 	private synchronized void updatePresence(String location, boolean in) {
 		if (in) {
 			cleanContext(location, Context.VIDE);
 			if (!localizedContext.get(location).contains(Context.OCCUPE)) {
 				localizedContext.get(location).add(Context.OCCUPE);
-				System.out.println("From Manager Service : Ajout contexte "
-						+ Context.OCCUPE.descriptor + " dans " + location);
+				System.out.println("From Manager Service : Ajout contexte " + Context.OCCUPE.descriptor + " dans " + location);
 			}
-		} else {
+		} 
+		else {
 			cleanContext(location, Context.OCCUPE);
 			if (!localizedContext.get(location).contains(Context.VIDE)) {
 				localizedContext.get(location).add(Context.VIDE);
-				System.out.println("From Manager Service : Ajout contexte "
-						+ Context.VIDE.descriptor + " dans " + location);
+				System.out.println("From Manager Service : Ajout contexte " + Context.VIDE.descriptor + " dans " + location);
 			}
 		}
 	}
-
-	private synchronized void cleanContext(String location,
-			Context contextToClean) {
+	
+	/**
+	 * Retire un contexte des contextes actifs d'un localistation
+	 * @param location Lieu où retirer le contexte
+	 * @param contextToClean Contexte à retirer
+	 */
+	private synchronized void cleanContext(String location, Context contextToClean) {
 		if (localizedContext.get(location).remove(contextToClean))
-			System.out.println("From Manager Service : Nettayage du contexte "
-					+ contextToClean.descriptor + " dans " + location);
+			System.out.println("From Manager Service : Nettayage du contexte " + contextToClean.descriptor + " dans " + location);
 	}
 
 	private synchronized void checkTime(String location) {
@@ -117,22 +130,18 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		System.out.println("From Manager Service : Prise en compte du time of the day : "
 				+ momentOfTheDay.getCurrentHourOfTheDay());
 		if (Math.random() > 0.5) {
-			System.out
-					.println("From Manager Service : Hors horaires définis par le régime.");
-			localizedContext.get(location).removeAll(
-					Arrays.asList(Context.values()));
+			System.out.println("From Manager Service : Hors horaires définis par le régime.");
+			localizedContext.get(location).removeAll(Arrays.asList(Context.values()));
+			
 			if (!location.equalsIgnoreCase("bedroom")) {
 				localizedContext.get(location).add(Context.ACCESINTERDIT);
 			} else {
-				System.out
-						.println("From Manager Service : Presence obligatoire dans "
-								+ location);
+				System.out.println("From Manager Service : Presence obligatoire dans " + location);
 			}
 
 			localizedContext.get(location).add(Context.COUVREFEU);
 		} else {
-			System.out
-					.println("From Manager Service : Dans les horaires définis par le régime.");
+			System.out.println("From Manager Service : Dans les horaires définis par le régime.");
 		}
 	}
 
@@ -141,9 +150,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		cleanContext(location, Context.INACTIF);
 
 		if (!localizedContext.get(location).contains(Context.ACTIF)) {
-			System.out
-					.println("From Manager Service : Ajout contexte ACTIF dans "
-							+ location);
+			System.out.println("From Manager Service : Ajout contexte ACTIF dans " + location);
 			localizedContext.get(location).add(Context.ACTIF);
 		}
 
@@ -151,24 +158,21 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 
 	private synchronized void checkKnownLocation(String location) {
 		if (!localizedContext.containsKey(location)) {
-			System.out.println("From Manager Service : Nouvelle zone ("
-					+ location + ") ajoutée.");
+			System.out.println("From Manager Service : Nouvelle zone ("+ location + ") ajoutée.");
 			localizedContext.put(location, new ArrayList<Context>());
-		} else {
-			System.out.println("From Manager Service : Zone (" + location
-					+ ") déjà découverte.");
-		}
-
+		} 
+		else 
+			System.out.println("From Manager Service : Zone (" + location + ") déjà découverte.");
 	}
 	
 	@Override
 	public void pushTenMinutes() {
 		System.out.println("From Manager Service : pushTenMinutes called : " + this.tenMinutesCounter);
-		this.tenMinutesCounter++;
-		//Pour l'instant on déclenche des évenements au dessus de trois
-		//Pas la peine de compter plus
-		if (this.tenMinutesCounter > 3) {
-			this.tenMinutesCounter = 0;
+		for(String location : this.localizedContext.keySet()) {
+			this.computeContext(location);
+			int tickForRoom = this.tenMinutesCounter.get(location);
+			this.tenMinutesCounter.replace(location, tickForRoom++);
+			// TODO Réinitialiser quand > 3 ?
 		}
 	}
 
