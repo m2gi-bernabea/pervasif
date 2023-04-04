@@ -19,7 +19,6 @@
     </requires>
     <callback method="start" transition="validate"/>
     <callback method="stop" transition="invalidate"/>
-    <requires specification="manager.service.provided.it.ContextProviderIt" field="contextProvider"/>
     <requires specification="manager.service.provided.it.ManagerProviderIt" field="managerProvider"/>
   </component>
   <instance component="ListenerSensor" name="ListenerSensor-1"/>

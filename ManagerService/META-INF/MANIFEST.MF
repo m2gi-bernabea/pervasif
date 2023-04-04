@@ -52,29 +52,34 @@ iPOJO-Components: instance { $component="ManagerProvider" $name="Manag
  ation="time.service.provided.it.MomentOfTheDayIt" $field="momentOfThe
  Day" }manipulation { $classname="manager.service.provided.impl.Manage
  rProviderImpl" interface { $name="manager.service.provided.it.Manager
- ProviderIt" }field { $name="activatorService" $type="activator.servic
- e.provided.ActivatorServiceIT" }field { $name="isCurfew" $type="boole
- an" }field { $name="localizedContext" $type="java.util.HashMap" }fiel
- d { $name="momentOfTheDay" $type="time.service.provided.it.MomentOfTh
- eDayIt" }field { $name="tenMinutesCounter" $type="java.util.Map" }met
- hod { $name="computeContext" $arguments="{java.lang.String}" $names="
- {location}" }method { $name="computeKitchenContext" $arguments="{java
- .util.List,java.lang.String}" $names="{context,location}" }method { $
- name="computeBathroomContext" $arguments="{java.util.List,java.lang.S
- tring}" $names="{context,location}" }method { $name="computeBedroomCo
- ntext" $arguments="{java.util.List,java.lang.String}" $names="{contex
- t,location}" }method { $name="computeLoungeContext" $arguments="{java
- .util.List,java.lang.String}" $names="{context,location}" }method { $
- name="stop" }method { $name="start" }method { $name="peopleIn" $argum
- ents="{java.lang.String}" $names="{location}" }method { $name="people
- Out" $arguments="{java.lang.String}" $names="{location}" }method { $n
- ame="movementIn" $arguments="{java.lang.String}" $names="{location}" 
- }method { $name="updatePresence" $arguments="{java.lang.String,boolea
- n}" $names="{location,in}" }method { $name="cleanContext" $arguments=
- "{java.lang.String,manager.service.utils.Context}" $names="{location,
- contextToClean}" }method { $name="checkTime" $arguments="{java.lang.S
- tring}" $names="{location}" }method { $name="updateActivity" $argumen
- ts="{java.lang.String}" $names="{location}" }method { $name="checkKno
- wnLocation" $arguments="{java.lang.String}" $names="{location}" }meth
- od { $name="pushTenMinutes" }}}
+ ProviderIt" }field { $name="DEBUG" $type="boolean" }field { $name="ac
+ tivatorService" $type="activator.service.provided.ActivatorServiceIT"
+  }field { $name="isCurfew" $type="boolean" }field { $name="localizedC
+ ontext" $type="java.util.HashMap" }field { $name="momentOfTheDay" $ty
+ pe="time.service.provided.it.MomentOfTheDayIt" }field { $name="tenMin
+ utesCounter" $type="java.util.Map" }method { $name="computeContext" $
+ arguments="{java.lang.String}" $names="{location}" }method { $name="c
+ omputeKitchenContext" $arguments="{java.util.List,java.lang.String}" 
+ $names="{context,location}" }method { $name="computeBathroomContext" 
+ $arguments="{java.util.List,java.lang.String}" $names="{context,locat
+ ion}" }method { $name="computeBedroomContext" $arguments="{java.util.
+ List,java.lang.String}" $names="{context,location}" }method { $name="
+ computeLoungeContext" $arguments="{java.util.List,java.lang.String}" 
+ $names="{context,location}" }method { $name="stop" }method { $name="s
+ tart" }method { $name="peopleIn" $arguments="{java.lang.String}" $nam
+ es="{location}" }method { $name="peopleOut" $arguments="{java.lang.St
+ ring}" $names="{location}" }method { $name="movementIn" $arguments="{
+ java.lang.String}" $names="{location}" }method { $name="updatePresenc
+ e" $arguments="{java.lang.String,boolean}" $names="{location,in}" }me
+ thod { $name="cleanContext" $arguments="{java.lang.String,manager.ser
+ vice.utils.Context}" $names="{location,contextToClean}" }method { $na
+ me="checkTime" $arguments="{java.lang.String}" $names="{location}" }m
+ ethod { $name="updateActivity" $arguments="{java.lang.String}" $names
+ ="{location}" }method { $name="checkKnownLocation" $arguments="{java.
+ lang.String}" $names="{location}" }method { $name="pushTenMinutes" }m
+ ethod { $name="printContext" $return="java.lang.String" $arguments="{
+ java.lang.String}" $names="{location}" }method { $name="changeToInact
+ if" $arguments="{java.lang.String}" $names="{location}" }method { $na
+ me="newTemperature" $arguments="{java.lang.String,double}" $names="{l
+ ocation,temp}" }}}
 

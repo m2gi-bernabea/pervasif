@@ -7,7 +7,6 @@ import fr.liglab.adele.icasa.device.motion.MotionSensor;
 import fr.liglab.adele.icasa.device.presence.PresenceSensor;
 import fr.liglab.adele.icasa.device.temperature.Thermometer;
 import java.util.Map;
-import manager.service.provided.it.ContextProviderIt;
 import manager.service.provided.it.ManagerProviderIt;
 
 public class ListenerSensorImpl implements DeviceListener {
@@ -20,8 +19,6 @@ public class ListenerSensorImpl implements DeviceListener {
 	private PresenceSensor[] presenceSensors;
 	/** Field for thermometerSensors dependency */
 	private Thermometer[] thermometerSensors;
-	/** Field for contextProvider dependency */
-	private ContextProviderIt contextProvider;
 	/** Field for managerProvider dependency */
 	private ManagerProviderIt managerProvider;
 
@@ -127,25 +124,28 @@ public class ListenerSensorImpl implements DeviceListener {
 				+ " with property: " + propertyName + " old value: " + oldValue
 				+ " and new value: " + newValue);
 
+		// get the location where the device is:
+		String location = (String) device
+				.getPropertyValue("Location");
+		
 		if (device instanceof PresenceSensor) {
 			if (propertyName
 					.equals(PresenceSensor.PRESENCE_SENSOR_SENSED_PRESENCE)) {
-				// get the location where the sensor is:
-				String detectorLocation = (String) device
-						.getPropertyValue("Location");
 				if((Boolean) newValue){
-					System.out.println("presence detected in " + detectorLocation);
-					managerProvider.peopleIn(detectorLocation);
+					System.out.println("presence detected in " + location);
+					managerProvider.peopleIn(location);
 				} else {
-					System.out.println("no more presence in " +detectorLocation);
-					managerProvider.peopleOut(detectorLocation);
+					System.out.println("no more presence in " +location);
+					managerProvider.peopleOut(location);
 				}
 			}
 		}
 
 		if (device instanceof Thermometer) {
-			System.out.println("nouvelle température");
+			System.out.println("nouvelle température dans : " + location);
 			System.out.println("Temp : "+ ((Thermometer) device).getTemperature());
+			managerProvider.newTemperature(location, ((Thermometer) device).getTemperature() - 273.15);
+			
 		}
 
 	}

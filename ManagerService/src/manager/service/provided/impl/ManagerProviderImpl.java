@@ -22,6 +22,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	private static final String bedroomLocation = "bedroom";
 	private static final String bathroomLocation = "bathroom";
 	private boolean isCurfew = false;
+	private final boolean DEBUG = true;
 
 	private void computeContext(String location) {
 		System.out.println("Calcul du contexte pour la zone : " +location);
@@ -120,6 +121,8 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 			if (!localizedContext.get(location).contains(Context.OCCUPE)) {
 				localizedContext.get(location).add(Context.OCCUPE);
 				System.out.println("From Manager Service : Ajout contexte " + Context.OCCUPE.descriptor + " dans " + location);
+				System.out.println("From Manager Service : Activation du compteur (-1) pour " + location);
+				tenMinutesCounter.replace(location, -1);
 			}
 		} 
 		else {
@@ -127,6 +130,8 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 			if (!localizedContext.get(location).contains(Context.VIDE)) {
 				localizedContext.get(location).add(Context.VIDE);
 				System.out.println("From Manager Service : Ajout contexte " + Context.VIDE.descriptor + " dans " + location);
+				System.out.println("From manager service : Désactivation des compteurs pour " + location);
+				tenMinutesCounter.replace(location, -2);
 			}
 		}
 	}
@@ -143,23 +148,29 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 
 	private synchronized void checkTime(String location) {
 		//Appel TimeOfTheDay pour vérifier si l'accès est interdit ou si couvre feu (hors horaires)
-		System.out.println("From Manager Service : Prise en compte du time of the day : " + momentOfTheDay.getCurrentHourOfTheDay());
+		System.out.println("From Manager Service : Prise en compte du time of the day : "
+				+ momentOfTheDay.getCurrentHourOfTheDay());
+		int hour = momentOfTheDay.getCurrentHourOfTheDay() % 24 ;
 		
-		if (Math.random() > 0.5) {
+		if ((hour >= 22 && hour <= 24) || (hour >= 0 && hour <= 2)) {
 			System.out.println("From Manager Service : Hors horaires définis par le régime.");
-			localizedContext.get(location).removeAll(Arrays.asList(Context.values()));
-			
-			if (!location.equalsIgnoreCase("bedroom")) 
+			cleanContext(location, Context.ACTIF);
+			cleanContext(location, Context.INACTIF);
+			cleanContext(location, Context.OCCUPE);
+			cleanContext(location, Context.VIDE);
+			cleanContext(location, Context.TROPLONG);
+			if (!location.equalsIgnoreCase("bedroom")) {
 				localizedContext.get(location).add(Context.ACCESINTERDIT);
-			
-			else 
+			}
+			else {
 				System.out.println("From Manager Service : Presence obligatoire dans " + location);
-			
+			}
 			this.isCurfew = true;
-		} 
-		
-		else {
+			System.out.println("From manager service : Désactivation des compteurs (-2)");
+			tenMinutesCounter.replace(location, -2);
+		} else {
 			System.out.println("From Manager Service : Dans les horaires définis par le régime.");
+			cleanContext(location, Context.ACCESINTERDIT);
 			this.isCurfew = false;
 		}
 			
@@ -173,6 +184,9 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 			System.out.println("From Manager Service : Ajout contexte ACTIF dans " + location);
 			localizedContext.get(location).add(Context.ACTIF);
 		}
+		
+		System.out.println("From manager service : Compteur enclenché (-1) dans " + location);
+		tenMinutesCounter.replace(location, -1);
 
 	}
 
@@ -180,6 +194,8 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		if (!localizedContext.containsKey(location)) {
 			System.out.println("From Manager Service : Nouvelle zone ("+ location + ") ajoutée.");
 			localizedContext.put(location, new ArrayList<Context>());
+			System.out.println("From Manager service : Initialisation du compteur (-2) pour " + location);
+			tenMinutesCounter.put(location, -2);
 		} 
 		else 
 			System.out.println("From Manager Service : Zone (" + location + ") déjà découverte.");
@@ -192,9 +208,41 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		for(String location : this.localizedContext.keySet()) {
 			this.computeContext(location);
 			int tickForRoom = this.tenMinutesCounter.get(location);
-			this.tenMinutesCounter.replace(location, tickForRoom++);
-			// TODO Réinitialiser quand > 3 ?
+			if(tickForRoom != -2) {
+				System.out.println("From Manager Service : compteur enclenché, valeur actuelle - "+tickForRoom );
+				if(tickForRoom == -1) {
+					changeToInactif(location);
+				}
+				this.tenMinutesCounter.replace(location, tickForRoom++);
+				System.out.println("From manager service : Incrément du compteur.");
+				if(DEBUG) {
+					System.out.println("(DEBUG) From manager service : \n - "+location+" : "+printContext(location));
+					
+				}
+			} else {
+				System.out.println("From Manager Service : compteur désenclenché (-2)");
+			}
 		}
+	}
+
+	private String printContext(String location) {
+		StringBuilder res = new StringBuilder();
+		for(Context context : localizedContext.get(location))
+			res.append(context.descriptor + "-");
+		return res.toString();
+	}
+
+	private void changeToInactif(String location) {
+		cleanContext(location, Context.ACTIF);
+		
+		System.out.println("From Manager service : change de context vers " + Context.INACTIF.descriptor + " dans "+location);
+		localizedContext.get(location).add(Context.INACTIF);
+	}
+
+	@Override
+	public void newTemperature(String location, double temp) {
+		System.out.println("Manager Service : nouvelle température "+ temp + " dans " + location);
+		
 	}
 
 }
