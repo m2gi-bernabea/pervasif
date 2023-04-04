@@ -78,7 +78,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 			// this.activatorService.activateSpeaker(location); TODO rétablir activation du speaker
 		}
 	}
-	
+
 	/** Component Lifecycle Method */
 	public void stop() {
 		System.out.println("Service ManagerProvider stopped !");
@@ -114,44 +114,59 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		checkKnownLocation(location);
 		updateActivity(location);
 	}
-	
+
 	private synchronized void updatePresence(String location, boolean in) {
 		if (in) {
 			cleanContext(location, Context.VIDE);
 			if (!localizedContext.get(location).contains(Context.OCCUPE)) {
 				localizedContext.get(location).add(Context.OCCUPE);
-				System.out.println("From Manager Service : Ajout contexte " + Context.OCCUPE.descriptor + " dans " + location);
-				System.out.println("From Manager Service : Activation du compteur (-1) pour " + location);
+				System.out.println("From Manager Service : Ajout contexte "
+						+ Context.OCCUPE.descriptor + " dans " + location);
+				System.out
+						.println("From Manager Service : Activation du compteur (-1) pour "
+								+ location);
 				tenMinutesCounter.replace(location, -1);
 			}
-		} 
-		else {
+		} else {
 			cleanContext(location, Context.OCCUPE);
+			cleanContext(location, Context.TROPLONG);
+			cleanContext(location, Context.ACTIF);
+			cleanContext(location, Context.INACTIF);
 			if (!localizedContext.get(location).contains(Context.VIDE)) {
 				localizedContext.get(location).add(Context.VIDE);
-				System.out.println("From Manager Service : Ajout contexte " + Context.VIDE.descriptor + " dans " + location);
-				System.out.println("From manager service : Désactivation des compteurs pour " + location);
+				System.out.println("From Manager Service : Ajout contexte "
+						+ Context.VIDE.descriptor + " dans " + location);
+				System.out
+						.println("From manager service : Désactivation des compteurs pour "
+								+ location);
 				tenMinutesCounter.replace(location, -2);
 			}
 		}
 	}
-	
+
 	/**
 	 * Retire un contexte des contextes actifs d'un localistation
-	 * @param location Lieu où retirer le contexte
-	 * @param contextToClean Contexte à retirer
+	 * 
+	 * @param location
+	 *            Lieu où retirer le contexte
+	 * @param contextToClean
+	 *            Contexte à retirer
 	 */
-	private synchronized void cleanContext(String location, Context contextToClean) {
+	private synchronized void cleanContext(String location,
+			Context contextToClean) {
 		if (localizedContext.get(location).remove(contextToClean))
-			System.out.println("From Manager Service : Nettayage du contexte " + contextToClean.descriptor + " dans " + location);
+			System.out.println("From Manager Service : Nettayage du contexte "
+					+ contextToClean.descriptor + " dans " + location);
 	}
 
 	private synchronized void checkTime(String location) {
-		//Appel TimeOfTheDay pour vérifier si l'accès est interdit ou si couvre feu (hors horaires)
-		System.out.println("From Manager Service : Prise en compte du time of the day : "
-				+ momentOfTheDay.getCurrentHourOfTheDay());
-		int hour = momentOfTheDay.getCurrentHourOfTheDay() % 24 ;
-		
+		// Appel TimeOfTheDay pour vérifier si l'accès est interdit ou si couvre
+		// feu (hors horaires)
+		System.out
+				.println("From Manager Service : Prise en compte du time of the day : "
+						+ momentOfTheDay.getCurrentHourOfTheDay());
+		int hour = momentOfTheDay.getCurrentHourOfTheDay() % 24;
+
 		if ((hour >= 22 && hour <= 24) || (hour >= 0 && hour <= 2)) {
 			System.out.println("From Manager Service : Hors horaires définis par le régime.");
 			cleanContext(location, Context.ACTIF);
@@ -177,30 +192,37 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	}
 
 	private synchronized void updateActivity(String location) {
-		//Supprimme le contexte INACTIF s'il existe
+		// Supprimme le contexte INACTIF s'il existe
 		cleanContext(location, Context.INACTIF);
 
 		if (!localizedContext.get(location).contains(Context.ACTIF)) {
-			System.out.println("From Manager Service : Ajout contexte ACTIF dans " + location);
+			System.out
+					.println("From Manager Service : Ajout contexte ACTIF dans "
+							+ location);
 			localizedContext.get(location).add(Context.ACTIF);
 		}
-		
-		System.out.println("From manager service : Compteur enclenché (-1) dans " + location);
+
+		System.out
+				.println("From manager service : Compteur enclenché (-1) dans "
+						+ location);
 		tenMinutesCounter.replace(location, -1);
 
 	}
 
 	private synchronized void checkKnownLocation(String location) {
 		if (!localizedContext.containsKey(location)) {
-			System.out.println("From Manager Service : Nouvelle zone ("+ location + ") ajoutée.");
+			System.out.println("From Manager Service : Nouvelle zone ("
+					+ location + ") ajoutée.");
 			localizedContext.put(location, new ArrayList<Context>());
-			System.out.println("From Manager service : Initialisation du compteur (-2) pour " + location);
+			System.out
+					.println("From Manager service : Initialisation du compteur (-2) pour "
+							+ location);
 			tenMinutesCounter.put(location, -2);
-		} 
-		else 
-			System.out.println("From Manager Service : Zone (" + location + ") déjà découverte.");
+		} else
+			System.out.println("From Manager Service : Zone (" + location
+					+ ") déjà découverte.");
 	}
-	
+
 	@Override
 	public void pushTenMinutes() {
 		System.out.println("From Manager Service : pushTenMinutes called : " + this.tenMinutesCounter);
@@ -208,41 +230,64 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		for(String location : this.localizedContext.keySet()) {
 			this.computeContext(location);
 			int tickForRoom = this.tenMinutesCounter.get(location);
-			if(tickForRoom != -2) {
-				System.out.println("From Manager Service : compteur enclenché, valeur actuelle - "+tickForRoom );
-				if(tickForRoom == -1) {
+			if (tickForRoom != -2) {
+				System.out
+						.println("From Manager Service : compteur enclenché, valeur actuelle - "
+								+ tickForRoom);
+				if (tickForRoom == -1) {
 					changeToInactif(location);
 				}
 				this.tenMinutesCounter.replace(location, tickForRoom++);
-				System.out.println("From manager service : Incrément du compteur.");
-				if(DEBUG) {
-					System.out.println("(DEBUG) From manager service : \n - "+location+" : "+printContext(location));
-					
+				System.out
+						.println("From manager service : Incrément du compteur.");
+				if (tenMinutesCounter.get(location) >= 3) {
+					changeToTropLong(location);
+				}
+				if (DEBUG) {
+					System.out.println("(DEBUG) From manager service : \n - "
+							+ location + " : " + printContext(location));
+
 				}
 			} else {
-				System.out.println("From Manager Service : compteur désenclenché (-2)");
+				System.out
+						.println("From Manager Service : compteur désenclenché (-2)");
 			}
+
+			// TODO Réinitialiser quand > 3 ?
+		}
+	}
+
+	private void changeToTropLong(String location) {
+		if (localizedContext.get(location).contains(Context.INACTIF)) {
+			System.out
+					.println("From manager service : ajout du contexte trop long dans "
+							+ location);
+			localizedContext.get(location).add(Context.TROPLONG);
 		}
 	}
 
 	private String printContext(String location) {
 		StringBuilder res = new StringBuilder();
-		for(Context context : localizedContext.get(location))
+		for (Context context : localizedContext.get(location))
 			res.append(context.descriptor + "-");
 		return res.toString();
 	}
 
 	private void changeToInactif(String location) {
-		cleanContext(location, Context.ACTIF);
-		
-		System.out.println("From Manager service : change de context vers " + Context.INACTIF.descriptor + " dans "+location);
-		localizedContext.get(location).add(Context.INACTIF);
+		if (localizedContext.get(location).contains(Context.ACTIF)) {
+			cleanContext(location, Context.ACTIF);
+
+			System.out.println("From Manager service : change de context vers "
+					+ Context.INACTIF.descriptor + " dans " + location);
+			localizedContext.get(location).add(Context.INACTIF);
+		}
 	}
 
 	@Override
 	public void newTemperature(String location, double temp) {
-		System.out.println("Manager Service : nouvelle température "+ temp + " dans " + location);
-		
+		System.out.println("Manager Service : nouvelle température " + temp
+				+ " dans " + location);
+
 	}
 
 }

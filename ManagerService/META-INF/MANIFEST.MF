@@ -82,4 +82,3 @@ iPOJO-Components: instance { $component="ManagerProvider" $name="Manag
  if" $arguments="{java.lang.String}" $names="{location}" }method { $na
  me="newTemperature" $arguments="{java.lang.String,double}" $names="{l
  ocation,temp}" }}}
-
