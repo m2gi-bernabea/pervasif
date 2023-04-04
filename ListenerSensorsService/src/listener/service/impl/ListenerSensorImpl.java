@@ -7,7 +7,6 @@ import fr.liglab.adele.icasa.device.motion.MotionSensor;
 import fr.liglab.adele.icasa.device.presence.PresenceSensor;
 import fr.liglab.adele.icasa.device.temperature.Thermometer;
 import java.util.Map;
-import manager.service.provided.it.ContextProviderIt;
 import manager.service.provided.it.ManagerProviderIt;
 
 public class ListenerSensorImpl implements DeviceListener {
@@ -20,8 +19,6 @@ public class ListenerSensorImpl implements DeviceListener {
 	private PresenceSensor[] presenceSensors;
 	/** Field for thermometerSensors dependency */
 	private Thermometer[] thermometerSensors;
-	/** Field for contextProvider dependency */
-	private ContextProviderIt contextProvider;
 	/** Field for managerProvider dependency */
 	private ManagerProviderIt managerProvider;
 
