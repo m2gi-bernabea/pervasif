@@ -31,9 +31,8 @@ public class TimerNotifierImpl implements PeriodicRunnable {
 	public void run() {
 		//Environ toutes les 10 minutes on push un message à voir avec quel facteur de temps on gère
 		int minutes = (int) (clock.getElapsedTime()/1000/60);
-		System.out.println("TimeNotifer provided service : check time 10 minutes are elapsed : " + minutes);
-		if (minutes % 10 < 2) {
-			System.out.println("push ten minutes to manager");
+		if (minutes % 10 < 2 && clock.getElapsedTime() != 0) {
+			System.out.println("TimerNotifer service : push ten minutes to manager");
 			managerProvider.pushTenMinutes();
 		}
 	}
