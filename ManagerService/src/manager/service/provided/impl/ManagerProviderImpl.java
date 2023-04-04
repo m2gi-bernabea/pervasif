@@ -17,6 +17,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	private HashMap<String, List<Context>> localizedContext;
 	private MomentOfTheDayIt momentOfTheDay;
 	private Map<String, Integer> tenMinutesCounter;
+	private final boolean DEBUG = true;
 
 	private void computeContext(String location) {
 		System.out.println("Calcul du contexte pour la zone : " +location);
@@ -103,6 +104,8 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 			if (!localizedContext.get(location).contains(Context.OCCUPE)) {
 				localizedContext.get(location).add(Context.OCCUPE);
 				System.out.println("From Manager Service : Ajout contexte " + Context.OCCUPE.descriptor + " dans " + location);
+				System.out.println("From Manager Service : Activation du compteur (-1) pour " + location);
+				tenMinutesCounter.replace(location, -1);
 			}
 		} 
 		else {
@@ -110,6 +113,8 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 			if (!localizedContext.get(location).contains(Context.VIDE)) {
 				localizedContext.get(location).add(Context.VIDE);
 				System.out.println("From Manager Service : Ajout contexte " + Context.VIDE.descriptor + " dans " + location);
+				System.out.println("From manager service : Désactivation des compteurs pour " + location);
+				tenMinutesCounter.replace(location, -2);
 			}
 		}
 	}
@@ -145,11 +150,14 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 			}
 
 			localizedContext.get(location).add(Context.COUVREFEU);
+			
+			System.out.println("From manager service : Désactivation des compteurs (-2)");
+			tenMinutesCounter.replace(location, -2);
 		} else {
 			System.out
 					.println("From Manager Service : Dans les horaires définis par le régime.");
 			cleanContext(location, Context.ACCESINTERDIT);
-			cleanContext(location, Context.COUVREFEU);
+			//isCurfue=false;
 		}
 	}
 
@@ -161,6 +169,9 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 			System.out.println("From Manager Service : Ajout contexte ACTIF dans " + location);
 			localizedContext.get(location).add(Context.ACTIF);
 		}
+		
+		System.out.println("From manager service : Compteur enclenché (-1) dans " + location);
+		tenMinutesCounter.replace(location, -1);
 
 	}
 
@@ -168,6 +179,8 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		if (!localizedContext.containsKey(location)) {
 			System.out.println("From Manager Service : Nouvelle zone ("+ location + ") ajoutée.");
 			localizedContext.put(location, new ArrayList<Context>());
+			System.out.println("From Manager service : Initialisation du compteur (-2) pour " + location);
+			tenMinutesCounter.put(location, -2);
 		} 
 		else 
 			System.out.println("From Manager Service : Zone (" + location + ") déjà découverte.");
@@ -179,9 +192,38 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		for(String location : this.localizedContext.keySet()) {
 			this.computeContext(location);
 			int tickForRoom = this.tenMinutesCounter.get(location);
-			this.tenMinutesCounter.replace(location, tickForRoom++);
+			if(tickForRoom != -2) {
+				System.out.println("From Manager Service : compteur enclenché, valeur actuelle - "+tickForRoom );
+				if(tickForRoom == -1) {
+					changeToInactif(location);
+				}
+				this.tenMinutesCounter.replace(location, tickForRoom++);
+				System.out.println("From manager service : Incrément du compteur.");
+				if(DEBUG) {
+					System.out.println("(DEBUG) From manager service : \n - "+location+" : "+printContext(location));
+					
+				}
+			} else {
+				System.out.println("From Manager Service : compteur désenclenché (-2)");
+			}
+			
+			
 			// TODO Réinitialiser quand > 3 ?
 		}
+	}
+
+	private String printContext(String location) {
+		StringBuilder res = new StringBuilder();
+		for(Context context : localizedContext.get(location))
+			res.append(context.descriptor + "-");
+		return res.toString();
+	}
+
+	private void changeToInactif(String location) {
+		cleanContext(location, Context.ACTIF);
+		
+		System.out.println("From Manager service : change de context vers " + Context.INACTIF.descriptor + " dans "+location);
+		localizedContext.get(location).add(Context.INACTIF);
 	}
 
 	@Override
