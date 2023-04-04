@@ -117,14 +117,15 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		System.out.println("From Manager Service : Prise en compte du time of the day : "
 				+ momentOfTheDay.getCurrentHourOfTheDay());
 		int hour = momentOfTheDay.getCurrentHourOfTheDay() % 24 ;
+		
 		if ((hour >= 22 && hour <= 24) || (hour >= 0 && hour <= 2)) {
 			System.out
 					.println("From Manager Service : Hors horaires définis par le régime.");
-			localizedContext.get(location).remove(Context.ACTIF);
-			localizedContext.get(location).remove(Context.INACTIF);
-			localizedContext.get(location).remove(Context.OCCUPE);
-			localizedContext.get(location).remove(Context.VIDE);
-			localizedContext.get(location).remove(Context.TROPLONG);
+			cleanContext(location, Context.ACTIF);
+			cleanContext(location, Context.INACTIF);
+			cleanContext(location, Context.OCCUPE);
+			cleanContext(location, Context.VIDE);
+			cleanContext(location, Context.TROPLONG);
 			if (!location.equalsIgnoreCase("bedroom")) {
 				localizedContext.get(location).add(Context.ACCESINTERDIT);
 			} else {
@@ -137,6 +138,8 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		} else {
 			System.out
 					.println("From Manager Service : Dans les horaires définis par le régime.");
+			cleanContext(location, Context.ACCESINTERDIT);
+			cleanContext(location, Context.COUVREFEU);
 		}
 	}
 
