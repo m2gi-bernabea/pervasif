@@ -98,6 +98,7 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 
 	@Override
 	public void activateSiren(String... rooms) {
+		System.out.println("From Activator Service : activer sirène");
 		for (String room : rooms) {
 			List<Siren> sameLocationSirens = getSirensFromLocation(room);
 
@@ -131,6 +132,7 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 	
 	@Override
 	public void activateSprinkler(String... rooms) {
+		System.out.println("From Activator Service : activation des jets d'eau");
 		for (String room : rooms) {
 			List<Sprinkler> sameLocationSprinklers = getSprinklerFromLocation(room);
 
@@ -151,6 +153,7 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 
 	@Override
 	public void placeCurfew() {
+		System.out.println("From Activator Service : couvre feu extinction des lumières");
 		for (BinaryLight binaryLight : this.binaryLights)
 			binaryLight.turnOff();
 	}

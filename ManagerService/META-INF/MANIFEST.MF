@@ -77,8 +77,10 @@ iPOJO-Components: instance { $component="ManagerProvider" $name="Manag
  ethod { $name="updateActivity" $arguments="{java.lang.String}" $names
  ="{location}" }method { $name="checkKnownLocation" $arguments="{java.
  lang.String}" $names="{location}" }method { $name="pushTenMinutes" }m
- ethod { $name="printContext" $return="java.lang.String" $arguments="{
- java.lang.String}" $names="{location}" }method { $name="changeToInact
- if" $arguments="{java.lang.String}" $names="{location}" }method { $na
- me="newTemperature" $arguments="{java.lang.String,double}" $names="{l
- ocation,temp}" }}}
+ ethod { $name="changeToTropLong" $arguments="{java.lang.String}" $nam
+ es="{location}" }method { $name="printContext" $return="java.lang.Str
+ ing" $arguments="{java.lang.String}" $names="{location}" }method { $n
+ ame="changeToInactif" $arguments="{java.lang.String}" $names="{locati
+ on}" }method { $name="newTemperature" $arguments="{java.lang.String,d
+ ouble}" $names="{location,temp}" }}}
+

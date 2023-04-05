@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import manager.service.provided.it.ManagerProviderIt;
 import manager.service.utils.Context;
@@ -58,7 +59,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		}
 		
 		if(this.tenMinutesCounter.get(location) == 1 && context.contains(Context.OCCUPE))
-			this.activatorService.activateSprinkler(location);
+			//this.activatorService.activateSprinkler(location); TODO rétablir
 		
 		if(!context.contains(Context.OCCUPE))
 			this.activatorService.disableLight(location);
@@ -70,7 +71,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	}
 	
 	public void computeLoungeContext(List<Context> context, String location) {
-		if (this.tenMinutesCounter.get(location) == 3 && context.contains(Context.OCCUPE))
+		if (context.contains(Context.TROPLONG) && context.contains(Context.OCCUPE))
 			this.activatorService.activateSiren(location);
 		
 		if (context.contains(Context.ACCESINTERDIT) && context.contains(Context.OCCUPE)) {
@@ -137,7 +138,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 				System.out.println("From Manager Service : Ajout contexte "
 						+ Context.VIDE.descriptor + " dans " + location);
 				System.out
-						.println("From manager service : Désactivation des compteurs pour "
+						.println("From manager service : Désactivation des compteurs (-2) pour "
 								+ location);
 				tenMinutesCounter.replace(location, -2);
 			}
@@ -194,6 +195,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	private synchronized void updateActivity(String location) {
 		// Supprimme le contexte INACTIF s'il existe
 		cleanContext(location, Context.INACTIF);
+		cleanContext(location, Context.TROPLONG);
 
 		if (!localizedContext.get(location).contains(Context.ACTIF)) {
 			System.out
@@ -224,11 +226,10 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	}
 
 	@Override
-	public void pushTenMinutes() {
+	public synchronized void pushTenMinutes() {
 		System.out.println("From Manager Service : pushTenMinutes called : " + this.tenMinutesCounter);
 		
 		for(String location : this.localizedContext.keySet()) {
-			this.computeContext(location);
 			int tickForRoom = this.tenMinutesCounter.get(location);
 			if (tickForRoom != -2) {
 				System.out
@@ -237,11 +238,18 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 				if (tickForRoom == -1) {
 					changeToInactif(location);
 				}
-				this.tenMinutesCounter.replace(location, tickForRoom++);
+				tickForRoom++;
+				this.tenMinutesCounter.put(location, tickForRoom);
 				System.out
 						.println("From manager service : Incrément du compteur.");
 				if (tenMinutesCounter.get(location) >= 3) {
 					changeToTropLong(location);
+				} 
+				if(tenMinutesCounter.get(location) > 6) {
+					System.out.println("From manager service : Un dispositif est hs dans "+location);
+					System.out.println("From manager service : Plus de mise à jour reçu depuis 1h désactivation des compteurs (-2)");
+					tenMinutesCounter.put(location, -2);
+					//Voir si la mise en place du contexte ERREUR est facile ou pas.
 				}
 				if (DEBUG) {
 					System.out.println("(DEBUG) From manager service : \n - "
@@ -252,13 +260,14 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 				System.out
 						.println("From Manager Service : compteur désenclenché (-2)");
 			}
+			this.computeContext(location);
 
 			// TODO Réinitialiser quand > 3 ?
 		}
 	}
 
 	private void changeToTropLong(String location) {
-		if (localizedContext.get(location).contains(Context.INACTIF)) {
+		if (localizedContext.get(location).contains(Context.INACTIF) && !localizedContext.get(location).contains(Context.TROPLONG)) {
 			System.out
 					.println("From manager service : ajout du contexte trop long dans "
 							+ location);
@@ -274,12 +283,14 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	}
 
 	private void changeToInactif(String location) {
-		if (localizedContext.get(location).contains(Context.ACTIF)) {
+		if (localizedContext.get(location).contains(Context.ACTIF) || !localizedContext.get(location).contains(Context.INACTIF)) {
 			cleanContext(location, Context.ACTIF);
 
 			System.out.println("From Manager service : change de context vers "
 					+ Context.INACTIF.descriptor + " dans " + location);
 			localizedContext.get(location).add(Context.INACTIF);
+		} else {
+			System.out.println("From Manager service : Déjà inactif dans "+location);
 		}
 	}
 

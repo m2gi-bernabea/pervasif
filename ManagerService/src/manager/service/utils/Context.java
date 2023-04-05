@@ -9,7 +9,8 @@ public enum Context {
 	COUVREFEU("couvre feu"),
 	ACCESINTERDIT("acces interdit"),
 	TROPCHAUD("trop chaud"),
-	TROPFROID("trop froid");
+	TROPFROID("trop froid"),
+	ERREUR("dispositif HS");
 	
 	public final String descriptor;
 	

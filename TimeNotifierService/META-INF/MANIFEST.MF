@@ -42,16 +42,17 @@ Import-Package: fr.liglab.adele.icasa, fr.liglab.adele.icasa.access, f
  ure;version="[1.12.1,2.0.0)", org.json, org.osgi.service.cm;version=1
  .2, org.osgi.service.log;version=1.3
 iPOJO-Components: instance { $component="TimerNotifier" $name="TimerNo
- tifier-1" }component { $classname="TimerNotifierImpl" $name="TimerNot
- ifier" requires { $specification="fr.liglab.adele.icasa.clockservice.
- Clock" $field="clock" }requires { $specification="manager.service.pro
- vided.it.ManagerProviderIt" $field="managerProvider" }callback { $met
- hod="start" $transition="validate" }callback { $method="stop" $transi
- tion="invalidate" }manipulation { $classname="TimerNotifierImpl" inte
- rface { $name="fr.liglab.adele.icasa.service.scheduler.PeriodicRunnab
- le" }field { $name="clock" $type="fr.liglab.adele.icasa.clockservice.
- Clock" }field { $name="managerProvider" $type="manager.service.provid
- ed.it.ManagerProviderIt" }method { $name="stop" }method { $name="star
- t" }method { $name="run" }method { $name="getPeriod" $return="long" }
- method { $name="getUnit" $return="java.util.concurrent.TimeUnit" }}}
+ tifier-1" }component { $classname="timeNotifier.service.impl.TimerNot
+ ifierImpl" $name="TimerNotifier" requires { $specification="fr.liglab
+ .adele.icasa.clockservice.Clock" $field="clock" }requires { $specific
+ ation="manager.service.provided.it.ManagerProviderIt" $field="manager
+ Provider" }callback { $method="start" $transition="validate" }callbac
+ k { $method="stop" $transition="invalidate" }manipulation { $classnam
+ e="timeNotifier.service.impl.TimerNotifierImpl" interface { $name="fr
+ .liglab.adele.icasa.service.scheduler.PeriodicRunnable" }field { $nam
+ e="clock" $type="fr.liglab.adele.icasa.clockservice.Clock" }field { $
+ name="managerProvider" $type="manager.service.provided.it.ManagerProv
+ iderIt" }method { $name="stop" }method { $name="start" }method { $nam
+ e="run" }method { $name="getPeriod" $return="long" }method { $name="g
+ etUnit" $return="java.util.concurrent.TimeUnit" }}}
 
