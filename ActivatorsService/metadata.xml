@@ -4,6 +4,22 @@
     <provides specifications="activator.service.provided.ActivatorServiceIT"/>
     <callback method="start" transition="validate"/>
     <callback method="stop" transition="invalidate"/>
+    <requires aggregate="true" optional="true" specification="fr.liglab.adele.icasa.device.security.Siren" field="sirens">
+      <callback method="bindSiren" type="bind"/>
+      <callback method="unbindSiren" type="unbind"/>
+    </requires>
+    <requires aggregate="true" optional="true" specification="fr.liglab.adele.icasa.device.light.BinaryLight" field="binaryLights">
+      <callback method="bindBinaryLight" type="bind"/>
+      <callback method="unbindBinaryLight" type="unbind"/>
+    </requires>
+    <requires aggregate="true" optional="true" specification="fr.liglab.adele.icasa.device.sound.Speaker" field="speakers">
+      <callback method="bindSpeaker" type="bind"/>
+      <callback method="unbindSpeaker" type="unbind"/>
+    </requires>
+    <requires aggregate="true" optional="true" specification="fr.liglab.adele.icasa.device.sprinkler.Sprinkler" field="sprinklers">
+      <callback method="bindSprinkler" type="bind"/>
+      <callback method="unbindSprinkler" type="unbind"/>
+    </requires>
   </component>
   <instance component="ActivatorProvider" name="ActivatorProvider-1"/>
 </ipojo>

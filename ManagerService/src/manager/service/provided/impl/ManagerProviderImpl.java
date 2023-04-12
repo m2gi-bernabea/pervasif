@@ -59,7 +59,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		}
 		
 		if(this.tenMinutesCounter.get(location) == 1 && context.contains(Context.OCCUPE))
-			//this.activatorService.activateSprinkler(location); TODO rétablir
+			this.activatorService.activateSprinkler(location); 
 		
 		if(!context.contains(Context.OCCUPE))
 			this.activatorService.disableLight(location);
@@ -72,7 +72,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	
 	public void computeLoungeContext(List<Context> context, String location) {
 		if (context.contains(Context.TROPLONG) && context.contains(Context.OCCUPE))
-			this.activatorService.activateSiren(location);
+			this.activatorService.activateSprinkler(location);
 		
 		if (context.contains(Context.ACCESINTERDIT) && context.contains(Context.OCCUPE)) {
 			this.activatorService.activateSiren(location);

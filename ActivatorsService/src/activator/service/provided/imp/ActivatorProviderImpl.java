@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener<GenericDevice>{
+public class ActivatorProviderImpl implements ActivatorServiceIT,
+		DeviceListener<GenericDevice> {
 
 	private Siren[] sirens;
 	private BinaryLight[] binaryLights;
@@ -57,25 +58,29 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 	private synchronized List<Speaker> getSpeakersFromLocation(String location) {
 		List<Speaker> speakersLocation = new ArrayList<Speaker>();
 
-		for (Speaker speaker : this.speakers) 
-			if (speaker.getPropertyValue(LOCATION_PROPERTY_NAME).equals(location))
+		for (Speaker speaker : this.speakers)
+			if (speaker.getPropertyValue(LOCATION_PROPERTY_NAME).equals(
+					location))
 				speakersLocation.add(speaker);
 
 		return speakersLocation;
 	}
-	
-	private synchronized List<Sprinkler> getSprinklerFromLocation(String location) {
+
+	private synchronized List<Sprinkler> getSprinklerFromLocation(
+			String location) {
 		List<Sprinkler> sprinklersLocation = new ArrayList<Sprinkler>();
-		
-		for (Sprinkler sprinkler : this.sprinklers) 
-			if (sprinkler.getPropertyValue(LOCATION_PROPERTY_NAME).equals(location))
+
+		for (Sprinkler sprinkler : this.sprinklers)
+			if (sprinkler.getPropertyValue(LOCATION_PROPERTY_NAME).equals(
+					location))
 				sprinklersLocation.add(sprinkler);
-		
+
 		return sprinklersLocation;
 	}
 
 	@Override
 	public void activateLight(String... rooms) {
+		System.out.println("From Activator Service : activation des lumières");
 		for (String room : rooms) {
 			List<BinaryLight> sameLocationLigths = getBinaryLightFromLocation(room);
 
@@ -83,6 +88,8 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 				binaryLight.turnOn();
 
 		}
+		System.out
+				.println("From Activator Service : fin de méthode active lampe");
 	}
 
 	@Override
@@ -106,6 +113,8 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 				siren.turnOn();
 
 		}
+		System.out
+				.println("From Activator Service : fin de méthode active siren");
 	}
 
 	@Override
@@ -129,16 +138,19 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 			}
 		}
 	}
-	
+
 	@Override
 	public void activateSprinkler(String... rooms) {
-		System.out.println("From Activator Service : activation des jets d'eau");
+		System.out
+				.println("From Activator Service : activation des jets d'eau");
 		for (String room : rooms) {
 			List<Sprinkler> sameLocationSprinklers = getSprinklerFromLocation(room);
 
 			for (Sprinkler sprinkler : sameLocationSprinklers)
 				sprinkler.turnOn();
 		}
+		System.out
+				.println("From Activator Service : fin de méthode activation sprinkler");
 	}
 
 	@Override
@@ -153,13 +165,18 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 
 	@Override
 	public void placeCurfew() {
-		System.out.println("From Activator Service : couvre feu extinction des lumières");
-		for (BinaryLight binaryLight : this.binaryLights)
+		System.out
+				.println("From Activator Service : couvre feu extinction des lumières");
+		for (BinaryLight binaryLight : this.binaryLights) {
 			binaryLight.turnOff();
+		}
+		System.out
+				.println("From Activator Service : fin de méthode couvre-feu");
 	}
 
 	/** Bind Method for sirens dependency */
 	public void bindSiren(Siren siren, Map properties) {
+		System.out.println("From Activator Service : nouvelle sirene bound");
 		siren.addListener(this);
 	}
 
@@ -170,6 +187,8 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 
 	/** Bind Method for binaryLights dependency */
 	public void bindBinaryLight(BinaryLight binaryLight, Map properties) {
+		System.out
+				.println("From Activator Service : nouvelle lumiere bound");
 		binaryLight.addListener(this);
 	}
 
@@ -190,13 +209,13 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 
 	@Override
 	public void deviceAdded(GenericDevice arg0) {
-		// TODO Auto-generated method stub
+		System.out.println("event device added");
 	}
 
 	@Override
 	public void deviceEvent(GenericDevice arg0, Object arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -205,7 +224,8 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 	}
 
 	@Override
-	public void devicePropertyModified(GenericDevice arg0, String arg1, Object arg2, Object arg3) {
+	public void devicePropertyModified(GenericDevice arg0, String arg1,
+			Object arg2, Object arg3) {
 		// TODO Auto-generated method stub
 	}
 
@@ -219,6 +239,14 @@ public class ActivatorProviderImpl implements ActivatorServiceIT, DeviceListener
 		// TODO Auto-generated method stub
 	}
 
-	
+	/** Bind Method for sprinklers dependency */
+	public void bindSprinkler(Sprinkler sprinkler, Map properties) {
+		// TODO: Add your implementation code here
+	}
+
+	/** Unbind Method for sprinklers dependency */
+	public void unbindSprinkler(Sprinkler sprinkler, Map properties) {
+		// TODO: Add your implementation code here
+	}
 
 }
