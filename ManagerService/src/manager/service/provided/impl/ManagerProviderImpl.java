@@ -43,12 +43,22 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 			default:
 				break;
 		}
+		
 	}
 	
 	public void computeKitchenContext(List<Context> context, String location) {
 		if(context.contains(Context.OCCUPE) && context.contains(Context.ACCESINTERDIT)) {
 			this.activatorService.activateSiren(location);
 			//this.activatorService.activateSpeaker(location); TODO rétablir activation du speaker
+		}
+		
+		disableActivator(context, location);
+	}
+
+	private void disableActivator(List<Context> context, String location) {
+		if(context.contains(Context.OCCUPE) && context.contains(Context.ACTIF)|| context.contains(Context.VIDE)) {
+			this.activatorService.disableSiren(location);
+			this.activatorService.disableSprinkler(location);
 		}
 	}
 	
@@ -63,21 +73,30 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 		
 		if(!context.contains(Context.OCCUPE))
 			this.activatorService.disableLight(location);
+		
+		disableActivator(context, location);
 	}
 	
 	public void computeBedroomContext(List<Context> context, String location) {
 		if(context.contains(Context.ACCESINTERDIT))
 			this.activatorService.activateSiren(location);
+		
+		disableActivator(context, location);
 	}
 	
 	public void computeLoungeContext(List<Context> context, String location) {
-		if (context.contains(Context.TROPLONG) && context.contains(Context.OCCUPE))
+		if (context.contains(Context.TROPLONG) && context.contains(Context.OCCUPE)) {
 			this.activatorService.activateSprinkler(location);
+			this.activatorService.activateSiren(location);
+			this.activatorService.activateLight(location);
+		}
 		
 		if (context.contains(Context.ACCESINTERDIT) && context.contains(Context.OCCUPE)) {
 			this.activatorService.activateSiren(location);
 			// this.activatorService.activateSpeaker(location); TODO rétablir activation du speaker
 		}
+		
+		disableActivator(context, location);
 	}
 
 	/** Component Lifecycle Method */
@@ -129,6 +148,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 				tenMinutesCounter.replace(location, -1);
 			}
 		} else {
+			cleanContext(location, Context.ACCESINTERDIT);
 			cleanContext(location, Context.OCCUPE);
 			cleanContext(location, Context.TROPLONG);
 			cleanContext(location, Context.ACTIF);
@@ -137,11 +157,11 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 				localizedContext.get(location).add(Context.VIDE);
 				System.out.println("From Manager Service : Ajout contexte "
 						+ Context.VIDE.descriptor + " dans " + location);
-				System.out
-						.println("From manager service : Désactivation des compteurs (-2) pour "
-								+ location);
-				tenMinutesCounter.replace(location, -2);
 			}
+			System.out
+			.println("From manager service : Désactivation des compteurs (-2) pour "
+					+ location);
+			tenMinutesCounter.replace(location, -2);
 		}
 	}
 
@@ -175,7 +195,7 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 			cleanContext(location, Context.OCCUPE);
 			cleanContext(location, Context.VIDE);
 			cleanContext(location, Context.TROPLONG);
-			if (!location.equalsIgnoreCase("bedroom")) {
+			if (!location.equalsIgnoreCase("bedroom") && !localizedContext.get(location).contains(Context.ACCESINTERDIT)) {
 				localizedContext.get(location).add(Context.ACCESINTERDIT);
 			}
 			else {
@@ -229,7 +249,10 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 	public synchronized void pushTenMinutes() {
 		System.out.println("From Manager Service : pushTenMinutes called : " + this.tenMinutesCounter);
 		
+		
 		for(String location : this.localizedContext.keySet()) {
+			this.computeContext(location);
+			
 			int tickForRoom = this.tenMinutesCounter.get(location);
 			if (tickForRoom != -2) {
 				System.out
@@ -260,7 +283,6 @@ public class ManagerProviderImpl implements ManagerProviderIt {
 				System.out
 						.println("From Manager Service : compteur désenclenché (-2)");
 			}
-			this.computeContext(location);
 
 			// TODO Réinitialiser quand > 3 ?
 		}

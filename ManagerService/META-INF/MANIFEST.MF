@@ -60,27 +60,29 @@ iPOJO-Components: instance { $component="ManagerProvider" $name="Manag
  utesCounter" $type="java.util.Map" }method { $name="computeContext" $
  arguments="{java.lang.String}" $names="{location}" }method { $name="c
  omputeKitchenContext" $arguments="{java.util.List,java.lang.String}" 
- $names="{context,location}" }method { $name="computeBathroomContext" 
- $arguments="{java.util.List,java.lang.String}" $names="{context,locat
- ion}" }method { $name="computeBedroomContext" $arguments="{java.util.
- List,java.lang.String}" $names="{context,location}" }method { $name="
- computeLoungeContext" $arguments="{java.util.List,java.lang.String}" 
- $names="{context,location}" }method { $name="stop" }method { $name="s
- tart" }method { $name="peopleIn" $arguments="{java.lang.String}" $nam
- es="{location}" }method { $name="peopleOut" $arguments="{java.lang.St
- ring}" $names="{location}" }method { $name="movementIn" $arguments="{
- java.lang.String}" $names="{location}" }method { $name="updatePresenc
- e" $arguments="{java.lang.String,boolean}" $names="{location,in}" }me
- thod { $name="cleanContext" $arguments="{java.lang.String,manager.ser
- vice.utils.Context}" $names="{location,contextToClean}" }method { $na
- me="checkTime" $arguments="{java.lang.String}" $names="{location}" }m
- ethod { $name="updateActivity" $arguments="{java.lang.String}" $names
- ="{location}" }method { $name="checkKnownLocation" $arguments="{java.
- lang.String}" $names="{location}" }method { $name="pushTenMinutes" }m
- ethod { $name="changeToTropLong" $arguments="{java.lang.String}" $nam
- es="{location}" }method { $name="printContext" $return="java.lang.Str
- ing" $arguments="{java.lang.String}" $names="{location}" }method { $n
- ame="changeToInactif" $arguments="{java.lang.String}" $names="{locati
- on}" }method { $name="newTemperature" $arguments="{java.lang.String,d
- ouble}" $names="{location,temp}" }}}
+ $names="{context,location}" }method { $name="disableActivator" $argum
+ ents="{java.util.List,java.lang.String}" $names="{context,location}" 
+ }method { $name="computeBathroomContext" $arguments="{java.util.List,
+ java.lang.String}" $names="{context,location}" }method { $name="compu
+ teBedroomContext" $arguments="{java.util.List,java.lang.String}" $nam
+ es="{context,location}" }method { $name="computeLoungeContext" $argum
+ ents="{java.util.List,java.lang.String}" $names="{context,location}" 
+ }method { $name="stop" }method { $name="start" }method { $name="peopl
+ eIn" $arguments="{java.lang.String}" $names="{location}" }method { $n
+ ame="peopleOut" $arguments="{java.lang.String}" $names="{location}" }
+ method { $name="movementIn" $arguments="{java.lang.String}" $names="{
+ location}" }method { $name="updatePresence" $arguments="{java.lang.St
+ ring,boolean}" $names="{location,in}" }method { $name="cleanContext" 
+ $arguments="{java.lang.String,manager.service.utils.Context}" $names=
+ "{location,contextToClean}" }method { $name="checkTime" $arguments="{
+ java.lang.String}" $names="{location}" }method { $name="updateActivit
+ y" $arguments="{java.lang.String}" $names="{location}" }method { $nam
+ e="checkKnownLocation" $arguments="{java.lang.String}" $names="{locat
+ ion}" }method { $name="pushTenMinutes" }method { $name="changeToTropL
+ ong" $arguments="{java.lang.String}" $names="{location}" }method { $n
+ ame="printContext" $return="java.lang.String" $arguments="{java.lang.
+ String}" $names="{location}" }method { $name="changeToInactif" $argum
+ ents="{java.lang.String}" $names="{location}" }method { $name="newTem
+ perature" $arguments="{java.lang.String,double}" $names="{location,te
+ mp}" }}}
 

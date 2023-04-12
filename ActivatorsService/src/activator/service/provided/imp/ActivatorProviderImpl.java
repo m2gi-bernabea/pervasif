@@ -190,6 +190,7 @@ public class ActivatorProviderImpl implements ActivatorServiceIT,
 		System.out
 				.println("From Activator Service : nouvelle lumiere bound");
 		binaryLight.addListener(this);
+		binaryLight.turnOn();
 	}
 
 	/** Unbind Method for binaryLights dependency */
